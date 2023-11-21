@@ -1,0 +1,1 @@
+export {redisClient as redis} from './redis';
