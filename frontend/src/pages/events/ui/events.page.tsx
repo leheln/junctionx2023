@@ -1,8 +1,8 @@
 import {Layout} from '@/packages/layout';
 
-export function DashboardPage() {
+export function EventsPage() {
     return (
-        <Layout>
+        <Layout showNavigation>
         </Layout>
     );
 }
