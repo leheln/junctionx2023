@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "npx prisma generate && npx prisma db push && nodemon --exec ts-node -T src/server.ts"
+    "dev": "npm install && npx prisma generate && npx prisma db push && nodemon --exec ts-node -T src/server.ts"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "log4js": "^6.9.1",
+    "openai": "^4.20.0",
     "redis": "^4.6.10",
     "socket.io": "^4.7.2",
     "zod": "^3.22.4"
