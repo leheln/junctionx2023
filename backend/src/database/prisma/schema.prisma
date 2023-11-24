@@ -13,4 +13,10 @@ model User {
   password  String
   firstName String
   lastName  String
+  city String
+  street String
+  streetNumber String
+  address String
 }
+
+
