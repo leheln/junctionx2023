@@ -1,4 +1,4 @@
-# Hackathon Starter
+# JunctionX 2023 - Hackermen
 
 ## Setup
 
