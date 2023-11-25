@@ -19,6 +19,10 @@ export const storeItemGetApi = async (req: Request, res: Response) => {
             where: {
                 id: storeItemId,
             },
+            include: {
+                creator: true,
+                redeemers: true
+            }
         })
         if (storeItem) {
             return res.json(storeItem)

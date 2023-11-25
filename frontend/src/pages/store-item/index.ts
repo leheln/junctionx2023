@@ -1,0 +1,1 @@
+export {StoreItemPage} from './ui/store-item.page.tsx';

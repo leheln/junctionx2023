@@ -1,9 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
-import { RootState } from "@/core/state";
 import { StoreItem } from "@/models/storeItem";
-import { useSelector } from "react-redux";
-
+import { FaHeart } from "react-icons/fa";
+import "./h.css"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface StoreItemCardProps {
   storeItem: StoreItem
@@ -14,36 +13,21 @@ interface StoreItemCardProps {
 
 
 function StoreItemCard({ storeItem, onRedeem }: StoreItemCardProps) {
-  const { id , credits} = useSelector((state: RootState) => state.auth);
-  return <Card className="w-[400px]">
-    <img src="pic_trulli.jpg" alt="Italian Trulli" />
-    <CardTitle>{storeItem.title}</CardTitle>
-    <CardDescription>{storeItem.description}</CardDescription>
-    <CardContent className="p-0">
-      <div style={{ display: "flex", justifyContent: "space-evenly" }}>
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <img style={{ height: "20px", width: "20px" }} src="credit.png" alt="Italian Trulli" />
-          <span style={{ marginLeft: "5px" }}>{storeItem.creator?.lastName}</span>
-        </div>
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-          <img style={{ height: "20px", width: "20px" }} src="credit.png" alt="Italian Trulli" />
-          <span style={{ marginLeft: "5px" }}>{storeItem.credit}</span>
-        </div>
-      </div>
-    </CardContent>
-    <CardFooter className="p-0">
+  const [layoverVisible, setLayoverVisible] = useState(false)
+  return <div className="rounded-lg flex flex-col justify-between h-56 bg-cover bg-center overflow-hidden"
+    style={{ background: "url(/pic_trulli.jpg)" }}>
+    <div className="flex items-center p-3 gap-1" >
+      <img className="w-6 h-6" src="/credit.png" />
+      <div className="text-[#ffd53c] text-lg">{storeItem.credit}</div>
+      <div className="flex-grow" />
+      <FaHeart className="w-6 h-6" />
+    </div>
+    <div className="backdrop-blur backdrop-brightness-75 p-2">
+      <div className="text-lg">{storeItem.title}</div>
+      <div className="text-muted-foreground overflow-ellipsis">{storeItem.description}</div>
+    </div>
+  </div>
 
-      
-      <div style={{ marginLeft: "auto" }}>
-        {
-          storeItem.redeemers?.find(si => si.redeemerUserId === id)?
-          <Button>Already Redeemed</Button>
-          : 
-          <Button disabled={(credits || 0) < storeItem.credit} onClick={() => onRedeem(storeItem)}>Redeem</Button>
-        }
-      </div>
-    </CardFooter>
-  </Card>
 }
 
 export default StoreItemCard;

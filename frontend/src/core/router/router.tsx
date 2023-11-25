@@ -6,6 +6,7 @@ import {LoginPage, ProtectedRoute} from '@/packages/auth';
 import {CodePage} from "@/pages/code";
 import {AddUtilitiesPage} from "@/pages/add-utilities";
 import {EventPage} from "@/pages/event";
+import { StoreItemPage } from '@/pages/store-item';
 
 export function Router() {
     return (
@@ -36,6 +37,11 @@ export function Router() {
                 <Route path={'/store'} element={
                     <ProtectedRoute>
                         <StorePage/>
+                    </ProtectedRoute>
+                }/>
+                <Route path={'/store/:storeItemId'} element={
+                    <ProtectedRoute>
+                        <StoreItemPage/>
                     </ProtectedRoute>
                 }/>
 
