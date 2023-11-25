@@ -109,7 +109,7 @@ export const populateDatabase = async () => {
         credits: 100,
         date: new Date("2023-12-12T23:25:57Z"),
         description: "Embark on a journey towards a more sustainable and eco-friendly lifestyle with Greenpeace! Join us for an engaging workshop where we'll explore practical tips, share knowledge, and inspire action for a greener, healthier planet.",
-        image: greenpeaceGarbageCollectionBase64,
+        image: greenPeaceWorkshopBase64,
         title: "Greenpeace sustainability workshop",
         type: "WORKSHOP",
         organizer: {
@@ -148,9 +148,12 @@ export const populateDatabase = async () => {
         }
     }]
     await prisma.event.deleteMany()
-    await prisma.event.createMany({
-        data: events
-    })
+    for (const event of events) {
+        await prisma.event.create({
+            data: event
+        })
+    }
+    
 
     const consumptions: any[] = [
         {
