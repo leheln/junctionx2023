@@ -57,25 +57,15 @@ export const userGetEventsApi = async (req: Request, res: Response) => {
 }
 
 export const userGetConsumptionsApi = async (req: Request, res: Response) => {
-    const userId = req.params.userId
-    if (req.session.userId === userId) {
-        const consumptions = await prisma.consumption.findMany({
-            where: {
-                userId: userId,
-            },
-            orderBy: {
-                dateStart: 'desc'
-            }
-        })
-        return res.json({
-            id: userId,
-            consumptions
-        })
-    } else {
-        return res.status(403).send({
-            message: 'Forbidden'
-        });
-    }
+    const consumptions = await prisma.consumption.findMany({
+        where: {
+            userId: req.params.userId,
+        },
+        orderBy: {
+            dateStart: 'desc'
+        }
+    })
+    return res.json(consumptions)
 }
 
 export const userGetPassesApi = async (req: Request, res: Response) => {
@@ -226,21 +216,14 @@ export const userAddConsumption = async (req: Request, res: Response) => {
 }
 
 export const userDeleteConsumption = async (req: Request, res: Response) => {
-    const userId = req.params.userId
     const consumptionId = req.params.consumptionId
-    if (req.session.userId === userId && consumptionId) {
-        const consumption = await prisma.consumption.delete({
-            where: {
-                id: consumptionId,
-                userId: userId
-            }
-        })
-        return res.status(200).send(consumption)
-    } else {
-        return res.status(403).send({
-            message: 'Forbidden'
-        });
-    }
+    const consumption = await prisma.consumption.delete({
+        where: {
+            id: consumptionId,
+            userId: req.params.userId
+        }
+    })
+    return res.status(200).send(consumption)
 }
 
 export const userGetStoreItemsApi = async (req: Request, res: Response) => {

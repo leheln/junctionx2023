@@ -6,9 +6,10 @@ import {toast} from '@/components/ui/use-toast.ts';
 import {Card} from '@/components/ui/card.tsx';
 import {axios} from '@/core/axios';
 import {useNavigate} from 'react-router-dom';
+import {ConsumptionType} from "@/models/consumption.ts";
 
 interface ConsumptionData {
-    type: 'ELECTRICITY' | 'WATER' | 'GAS'
+    type: ConsumptionType
     dateStart: string,
     dateEnd: string,
     amount: number

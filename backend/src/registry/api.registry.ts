@@ -44,18 +44,20 @@ export const apiRegistry = (app: Application) => {
     app.post(`${API_PREFIX}/qr/get`, authentication, getQRApi);
 
     app.get(`${API_PREFIX}/users/storeItems`, authentication, userGetStoreItemsApi);
-    app.post(`${API_PREFIX}/users/events/:eventId`, authentication, userAddEventAttendance);
-    app.get(`${API_PREFIX}/users/:userId`, authentication, userGetApi);
+
     app.get(`${API_PREFIX}/users/:userId/events`, authentication, userGetEventsApi);
-    app.get(`${API_PREFIX}/users/:userId/consumptions`, authentication, userGetConsumptionsApi);
-    app.get(`${API_PREFIX}/users/:userId/passes`, authentication, userGetPassesApi);
+    app.post(`${API_PREFIX}/users/events/:eventId`, authentication, userAddEventAttendance);
     app.delete(`${API_PREFIX}/users/:userId/events/:eventId`, authentication, userDeleteEventAttendance);
 
+    app.get(`${API_PREFIX}/users/consumptions`, authentication, userGetConsumptionsApi);
+    app.post(`${API_PREFIX}/users/consumptions`, authentication, userAddConsumption)
+    app.delete(`${API_PREFIX}/users/consumptions/:consumptionId`, authentication, userDeleteConsumption)
+
+    app.get(`${API_PREFIX}/users/:userId/passes`, authentication, userGetPassesApi);
     app.post(`${API_PREFIX}/users/:userId/passes`, authentication, userAddPass)
     app.delete(`${API_PREFIX}/users/:userId/passes/:passId`, authentication, userDeletePass)
-    
-    app.post(`${API_PREFIX}/users/consumptions`, authentication, userAddConsumption)
-    app.delete(`${API_PREFIX}/users/:userId/consumptions/:consumptionId`, authentication, userDeleteConsumption)
+
+    app.get(`${API_PREFIX}/users/:userId`, authentication, userGetApi);
 
     app.get(`${API_PREFIX}/events`, authentication, eventGetListApi)
     app.post(`${API_PREFIX}/events`, authentication, eventCreateApi)
