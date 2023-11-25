@@ -1,16 +1,15 @@
 export interface Consumption {
     id?: string,
-    credit: number,
-    image: string,
-    description: string,
+    credits: number,
     userId: string
     dateStart: Date
     dateEnd: Date
     type: ConsumptionType
+    amount: number
 }
 
 export enum ConsumptionType {
-    ELECTRICITY,
-    WATER,
-    GAS
+    ELECTRICITY = "ELECTRICITY",
+    WATER = "WATER",
+    GAS = "GAS"
 }

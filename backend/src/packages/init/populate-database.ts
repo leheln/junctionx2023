@@ -88,23 +88,23 @@ export const populateDatabase = async () => {
     const consumptions: any[] = [
         {
             amount: 100,
-            credits: 10,
-            dateStart: new Date("2023-11-01T23:25:57Z"),
-            dateEnd: new Date("2023-11-30T23:25:57Z"),
+            credits: 800,
+            dateStart: new Date("2023-10-01T23:25:57Z"),
+            dateEnd: new Date("2023-10-30T23:25:57Z"),
             type: "ELECTRICITY"
         },
         {
-            amount: 20,
-            credits: 30,
-            dateStart: new Date("2023-11-01T23:25:57Z"),
-            dateEnd: new Date("2023-11-30T23:25:57Z"),
+            amount: 35,
+            credits: 1170,
+            dateStart: new Date("2023-10-01T23:25:57Z"),
+            dateEnd: new Date("2023-10-30T23:25:57Z"),
             type: "GAS"
         },
         {
-            amount: 211,
-            credits: 5,
-            dateStart: new Date("2023-11-01T23:25:57Z"),
-            dateEnd: new Date("2023-11-30T23:25:57Z"),
+            amount: 5,
+            credits: 500,
+            dateStart: new Date("2023-10-01T23:25:57Z"),
+            dateEnd: new Date("2023-10-30T23:25:57Z"),
             type: "WATER"
         },
     ]

@@ -13,7 +13,7 @@ function EventCard({event}: EventCardProps) {
                 style={{background: "url(/pic_trulli.jpg)"}}>
         <div className="flex items-center p-3 gap-1">
             <img className="w-6 h-6" src="/credit.png"/>
-            <div className="text-[#ffd53c] text-lg">{event.credits}</div>
+            <div className="text-[#ffd53c] text-lg font-bold">{event.credits}</div>
             <div className="flex-grow"/>
             <FaHeart className="w-6 h-6"/>
         </div>
