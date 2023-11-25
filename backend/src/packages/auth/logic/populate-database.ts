@@ -10,21 +10,7 @@ export const populateDatabase = async () => {
         zipCode: "1111"
     }
 
-    const passes: Prisma.PassCreateInput[] = [{
-        credits: 100,
-        dateStart: new Date("2023-11-01T23:25:57Z"),
-        dateEnd: new Date("2023-11-30T23:25:57Z"),
-        type: "PUBLIC_TRANSPORT"
-    },
 
-    {
-        credits: 200,
-        dateStart: new Date("2023-11-01T23:25:57Z"),
-        dateEnd: new Date("2023-11-30T23:25:57Z"),
-        type: "BIKE_PASS"
-    },
-
-    ]
 
     const events: Prisma.EventCreateInput[] = [{
         credits: 100,
@@ -51,26 +37,40 @@ export const populateDatabase = async () => {
 
     ]
     const userEmail = "user@email.com"
-    try {
-        await prisma.user.delete({
-            where: {
-                email: userEmail
-            }
-        })
-    } catch (e) {}
-    const createdUser = await prisma.user.create({
-        data: {
-            email: userEmail,
-            firstName: "Hacker",
-            lastName: "Hector",
-            address: {
-                create: address
-            },
-            credits: 0,
-            password: await hashPassword('admin'),
-
+    const user = await prisma.user.findFirst({
+        where: {
+            email: userEmail
         }
     })
+    try {
+
+        if (!user) {
+
+            await prisma.user.delete({
+                where: {
+                    email: userEmail
+                }
+            })
+        }
+    } catch (e) { }
+    let createdUser = user
+    if (!createdUser) {
+        createdUser = await prisma.user.create({
+            data: {
+                email: userEmail,
+                firstName: "Hacker",
+                lastName: "Hector",
+                address: {
+                    create: address
+                },
+                credits: 0,
+                password: await hashPassword('admin'),
+
+            }
+        })
+    }
+
+
     await prisma.event.deleteMany()
     const createdEvent1 = await prisma.event.create({
         data: events[0]
@@ -78,6 +78,66 @@ export const populateDatabase = async () => {
     const createdEvent2 = await prisma.event.create({
         data: events[1]
     })
+    const consumptions: any[] = [
+        {
+            amount: 100,
+            credits: 10,
+            dateStart: new Date("2023-11-01T23:25:57Z"),
+            dateEnd: new Date("2023-11-30T23:25:57Z"),
+            type: "ELECTRICITY"
+        },
+        {
+            amount: 20,
+            credits: 30,
+            dateStart: new Date("2023-11-01T23:25:57Z"),
+            dateEnd: new Date("2023-11-30T23:25:57Z"),
+            type: "GAS"
+        },
+        {
+            amount: 211,
+            credits: 5,
+            dateStart: new Date("2023-11-01T23:25:57Z"),
+            dateEnd: new Date("2023-11-30T23:25:57Z"),
+            type: "WATER"
+        },
+    ]
+    await prisma.consumption.deleteMany({})
+    await prisma.consumption.createMany({
+        data: consumptions.map(c => {
+            c.userId = createdUser.id
+            return c
+        })
+    })
+
+    const passes: any[] = [{
+        credits: 100,
+        dateStart: new Date("2023-11-01T23:25:57Z"),
+        dateEnd: new Date("2023-11-30T23:25:57Z"),
+        type: "PUBLIC_TRANSPORT",
+    },
+
+    {
+        credits: 200,
+        dateStart: new Date("2023-11-01T23:25:57Z"),
+        dateEnd: new Date("2023-11-30T23:25:57Z"),
+        type: "BIKE_PASS"
+    },
+
+    ]
+    prisma.pass.deleteMany({})
+    await prisma.pass.create({
+        data: {
+            userId: createdUser.id,
+            ...passes[0]
+        }
+    })
+    await prisma.pass.create({
+        data: {
+            userId: createdUser.id,
+            ...passes[1]
+        }
+    })
+
     await prisma.eventAttendance.deleteMany()
     await prisma.eventAttendance.createMany({
         data: [
@@ -89,6 +149,23 @@ export const populateDatabase = async () => {
             {
                 completed: false,
                 eventId: createdEvent2.id,
+                userId: createdUser.id
+            }
+        ]
+    })
+
+    await prisma.storeItem.createMany({
+        data: [
+            {
+                credit: 100,
+                description: "Store item desc",
+                image: "",
+                userId: createdUser.id
+            },
+            {
+                credit: 100,
+                description: "Longer store item desc",
+                image: "",
                 userId: createdUser.id
             }
         ]
