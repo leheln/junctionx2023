@@ -28,6 +28,7 @@ import {
     whoamiApi
 } from '@/packages/auth';
 import {tryUtilitiesApi} from '@/packages/consumption/api/try-utilities';
+import {getQRApi} from '@/packages/qr/api/getQR.api';
 
 const API_PREFIX = '/api';
 // Register APIs into this file from each feature
@@ -37,6 +38,8 @@ export const apiRegistry = (app: Application) => {
     app.post(`${API_PREFIX}/auth/whoami`, whoamiApi);
 
     app.post(`${API_PREFIX}/consumption/try-utilities`, authentication, tryUtilitiesApi);
+
+    app.post(`${API_PREFIX}/qr/get`, authentication, getQRApi);
 
     app.get(`${API_PREFIX}/users/:userId`, authentication, userGetApi);
     app.get(`${API_PREFIX}/users/:userId/events`, authentication, userGetEventsApi);
