@@ -212,21 +212,6 @@ export const populateDatabase = async () => {
         }
     })
 
-    await prisma.eventAttendance.deleteMany()
-    await prisma.eventAttendance.createMany({
-        data: [
-            {
-                completed: true,
-                eventId: createdEvent1.id,
-                userId: createdUser.id
-            },
-            {
-                completed: false,
-                eventId: createdEvent2.id,
-                userId: createdUser.id
-            }
-        ]
-    })
 
     await prisma.storeItem.createMany({
         data: [
