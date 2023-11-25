@@ -1,0 +1,7 @@
+{
+  "name": "Hackermen",
+  "short_name": "Hackermen",
+  "theme_color": "#1c1f37",
+  "background_color": "#1c1f37",
+  "display": "standalone"
+}
