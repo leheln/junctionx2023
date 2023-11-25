@@ -1,5 +1,5 @@
 import { prisma } from "@/database/prisma"
-import { hashPassword } from "./hash-password"
+import { hashPassword } from "../auth/logic/hash-password"
 import { Prisma } from "@prisma/client"
 
 export const populateDatabase = async () => {

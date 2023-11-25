@@ -1,6 +1,5 @@
-import { Request, Response } from 'express';
-import logger from '@/core/logger';
-import { prisma } from '@/database/prisma';
+import {Request, Response} from 'express';
+import {prisma} from '@/database/prisma';
 
 export const userGetApi = async (req: Request, res: Response) => {
     const userId = req.params.userId

@@ -9,7 +9,7 @@ import {redis} from '@/database/redis';
 import {apiRegistry, socketRegistry} from '@/registry';
 import logger from '@/core/logger';
 import {createFirstUser} from '@/packages/auth';
-import { populateDatabase } from './packages/auth/logic/populate-database';
+import { populateDatabase } from './packages/init/populate-database';
 
 
 const server = async () => {
