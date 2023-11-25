@@ -1,8 +1,6 @@
 import { StoreItem } from "@/models/storeItem";
-import { FaHeart } from "react-icons/fa";
-import "./h.css"
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { FaHeart } from "react-icons/fa";
 
 interface StoreItemCardProps {
   storeItem: StoreItem
