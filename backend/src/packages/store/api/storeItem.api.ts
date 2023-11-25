@@ -94,3 +94,42 @@ export const storeItemDeleteApi = async (req: Request, res: Response) => {
 }
 
 
+export const storeItemRedeemApi = async (req: Request, res: Response) => {
+    const storeItemId = req.params.storeItemId
+    if (storeItemId) {
+        const user = await prisma.user.findFirstOrThrow({
+            where: {
+                id: req.session.userId
+            }
+        })
+        const storeItem = await prisma.storeItem.delete({
+            where: {
+                id: storeItemId
+            }
+        })
+
+        if (user.credits >= storeItem.credit) {
+            prisma.user.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    credits: user.credits - storeItem.credit,
+                    storeItems: {
+                        connect: {
+                            id: storeItem.id
+                        }
+                    }
+                }
+            })
+
+        }
+        return res.status(200).send(storeItem)
+    } else {
+        return res.status(400).send({
+            message: 'Bad request'
+        });
+    }
+}
+
+

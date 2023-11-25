@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import SpinLoader from '@/components/spin-loader.tsx';
 import {useToast} from '@/components/ui/use-toast.ts';
 import {useDispatch} from 'react-redux';
-import {login, logout} from '@/packages/auth/state/auth.state.ts';
+import {creditUpdate, login, logout} from '@/packages/auth/state/auth.state.ts';
 import {axios} from '@/core/axios';
 
 interface AuthProps {
@@ -28,6 +28,9 @@ export function Auth({children}: AuthProps) {
                         firstName: response.data.firstName,
                         lastName: response.data.lastName,
                     }))
+                    axios.get(`/api/users/${response.data.id}`).then(r => {
+                        dispatch(creditUpdate({credits: r.data.credits}))
+                    })
                 } else {
                     dispatch(logout())
                 }

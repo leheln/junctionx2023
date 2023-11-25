@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/components/ui/card";
-import { axios } from "@/core/axios";
 import { RootState } from "@/core/state";
 import { SustainabilityEvent } from "@/models/event";
 import { useSelector } from "react-redux";

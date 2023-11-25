@@ -8,6 +8,10 @@ export const userGetApi = async (req: Request, res: Response) => {
             where: {
                 id: userId
             },
+            include: {
+                storeItems: true,
+                address: true
+            }
         })
         if (user) {
             const { password, ...rest } = user

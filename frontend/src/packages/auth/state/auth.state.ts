@@ -6,12 +6,16 @@ interface AuthState {
     email?: string,
     firstName?: string,
     lastName?: string,
+    credits?: number 
 }
 
 const initialAuthState: AuthState = {
     loggedIn: false
 };
 
+interface CreditPayload {
+    credits: number
+}
 interface LoginPayload {
     id: string,
     email: string,
@@ -32,9 +36,17 @@ const authSlice = createSlice({
                 lastName: action.payload.lastName
             };
         },
+
+        creditUpdate: (d, action: PayloadAction<CreditPayload>) => {
+            return {
+                ...d,
+                credits: action.payload.credits
+            }
+        },
+
         logout: () => initialAuthState
     }
 });
 
-export const {login, logout} = authSlice.actions;
+export const {login, logout, creditUpdate} = authSlice.actions;
 export const authReducer = authSlice.reducer;

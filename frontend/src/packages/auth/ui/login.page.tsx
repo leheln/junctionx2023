@@ -8,6 +8,7 @@ import {useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {axios} from '@/core/axios';
 import {login} from '@/packages/auth';
+import { creditUpdate } from '../state/auth.state';
 
 export function LoginPage() {
     const loggedIn = useSelector((state: RootState) => state.auth.loggedIn);
@@ -34,6 +35,7 @@ export function LoginPage() {
             email,
             password
         };
+        
         axios.post('/api/auth/login', data)
             .then(response => {
                 if (response.data.loggedIn) {
@@ -43,11 +45,15 @@ export function LoginPage() {
                         firstName: response.data.firstName,
                         lastName: response.data.lastName
                     }));
+                    axios.get(`/api/users/${response.data.id}`).then(r => {
+                        dispatch(creditUpdate({credits: r.data.credits}))
+                    })
                 }
             })
             .catch(() => {
                 setError('Couldn\'t log you in with the given credentials.')
             });
+        
     };
 
     return (
