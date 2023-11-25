@@ -98,8 +98,8 @@ function Accept({data, onRetry, onAdd}: AcceptProps) {
     return <>
         <Card className="flex flex-col px-4 py-2 w-52 items-center gap-2">
             <div className="text-xl">Add {data.type.toLowerCase()} bill</div>
-            <div><b>From:</b> {new Date(data.dateStart).toLocaleDateString('en-ca').replace(/-/g, '.')}</div>
-            <div><b>To:</b> {new Date(data.dateEnd).toLocaleDateString('en-ca').replace(/-/g, '.')}</div>
+            <div><b>From:</b> {new Date(data.dateStart).toLocaleDateString('hu')}</div>
+            <div><b>To:</b> {new Date(data.dateEnd).toLocaleDateString('hu')}</div>
             <div className="font-bold">{data.amount} kWh</div>
         </Card>
         <div className="flex w-48 gap-4">
