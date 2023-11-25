@@ -51,11 +51,13 @@ export const populateDatabase = async () => {
 
     ]
     const userEmail = "user@email.com"
-    await prisma.user.delete({
-        where: {
-            email: userEmail
-        }
-    })
+    try {
+        await prisma.user.delete({
+            where: {
+                email: userEmail
+            }
+        })
+    } catch (e) {}
     const createdUser = await prisma.user.create({
         data: {
             email: userEmail,
