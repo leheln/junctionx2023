@@ -1,9 +1,10 @@
 import OpenAI from 'openai';
 import {Base64Image, ConsumptionRaw} from '@/packages/consumption/types';
 import prompt from '@/packages/consumption/logic/prompt';
+import {OPENAI_KEY} from '@/packages/consumption/openaikey';
 
 const openai = new OpenAI({
-    apiKey: ''
+    apiKey: OPENAI_KEY
 });
 
 const MAX_TRIES = 3;

@@ -1,9 +1,9 @@
 import {Layout} from '@/packages/layout';
 import {ChangeEvent, FormEventHandler, useRef, useState} from "react";
 import {Button} from "@/components/ui/button.tsx";
-import axios from "axios";
 import SpinLoader from "@/components/spin-loader.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
+import {axios} from '@/core/axios';
 
 interface UtilitiesData {
     type: 'electricity' | 'water' | 'gas'
@@ -23,7 +23,7 @@ export function AddUtilitiesPage() {
         reader.readAsDataURL(file)
         reader.onloadend = () => {
             const data = {image: reader.result}
-            axios.post('/api/try-utilities', data)
+            axios.post('/api/consumption/try-utilities/', data)
                 .then(response => {
                     setData(response.data)
                     setLoading(false)

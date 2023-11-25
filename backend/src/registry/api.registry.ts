@@ -25,7 +25,7 @@ export const apiRegistry = (app: Application) => {
     app.post(`${API_PREFIX}/auth/logout`, logoutApi);
     app.post(`${API_PREFIX}/auth/whoami`, whoamiApi);
 
-    app.get(`${API_PREFIX}/consumption/try-utilities`, authentication, tryUtilitiesApi);
+    app.post(`${API_PREFIX}/consumption/try-utilities`, authentication, tryUtilitiesApi);
 
     app.get(`${API_PREFIX}/users/:userId`, authentication, userGetApi);
     app.get(`${API_PREFIX}/users/:userId/events`, authentication, userGetEventsApi);
