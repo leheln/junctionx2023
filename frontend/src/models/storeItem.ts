@@ -1,3 +1,4 @@
+import { StoreItemRedeem } from "./storeItemRedeem"
 import { User } from "./user"
 
 export interface StoreItem {
@@ -8,4 +9,6 @@ export interface StoreItem {
     description: string
     userId: string
     creator?: User
+    redeemers?: StoreItemRedeem[]
 }
+

@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardTitle } from "@/com
 import { RootState } from "@/core/state";
 import { StoreItem } from "@/models/storeItem";
 import { useSelector } from "react-redux";
-import {creditUpdate} from "@/packages/auth/state/auth.state.ts"
 
 
 interface StoreItemCardProps {
@@ -16,8 +15,7 @@ interface StoreItemCardProps {
 
 function StoreItemCard({ storeItem, onRedeem }: StoreItemCardProps) {
   const { id , credits} = useSelector((state: RootState) => state.auth);
-
-
+  console.log(storeItem)
   return <Card className="w-[400px]">
     <img src="pic_trulli.jpg" alt="Italian Trulli" />
     <CardTitle>{storeItem.title}</CardTitle>
@@ -39,6 +37,9 @@ function StoreItemCard({ storeItem, onRedeem }: StoreItemCardProps) {
       
       <div style={{ marginLeft: "auto" }}>
         {
+          storeItem.redeemers?.find(si => si.redeemerUserId === id)?
+          <Button>Already Redeemed</Button>
+          : 
           <Button disabled={(credits || 0) < storeItem.credit} onClick={() => onRedeem(storeItem)}>Redeem</Button>
         }
       </div>

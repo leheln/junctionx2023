@@ -3,6 +3,7 @@ import { Consumption } from "./consumption"
 import { SustainabilityEventAttendance, SustainabilityEvent } from "./event"
 import { Pass } from "./pass"
 import { StoreItem } from "./storeItem"
+import { StoreItemRedeem } from "./storeItemRedeem"
 
 export interface User {
     id?: string
@@ -18,4 +19,5 @@ export interface User {
     passes?:          Pass[]
     storeItems?:      StoreItem[]
     credits?:         number  
+    redeemedStoreItems?: StoreItemRedeem[]
 }

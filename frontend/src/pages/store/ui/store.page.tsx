@@ -10,7 +10,7 @@ import {creditUpdate} from "@/packages/auth/state/auth.state.ts"
 async function storeItemRedeem(storeItem: StoreItem, userCredits: number) {
 
     if(userCredits >= storeItem.credit) {
-        await axios.post(`/storeItems/${storeItem.id}/redeem`)
+        await axios.post(`/api/storeItems/${storeItem.id}/redeem`)
     }
 
 }
@@ -23,6 +23,7 @@ export function StorePage() {
             setStoreItems(res.data.items)
         })
     }, [])
+    console.log("nyaaaaaaa", credits)
     return (
         <Layout showNavigation>
             {storeItems.map(si => <StoreItemCard key={si.id} storeItem={si} onRedeem={(si) =>{

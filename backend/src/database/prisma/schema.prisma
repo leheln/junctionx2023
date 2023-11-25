@@ -27,6 +27,7 @@ model User {
   address         Address?          @relation(fields: [adressId], references: [id])
   organizedEvents Event[]
   attendances     EventAttendance[]
+  redeemedStoreItems     StoreItemRedeem[]
   consumptions    Consumption[]
   passes          Pass[]
   storeItems      StoreItem[]
@@ -103,4 +104,13 @@ model StoreItem {
   description String
   userId      String?
   creator     User?   @relation(fields: [userId], references: [id])
+  redeemers StoreItemRedeem[]
+}
+
+model StoreItemRedeem {
+  id        String  @id @default(uuid())
+  storeItemId   String?
+  storeItem    StoreItem?  @relation(fields: [storeItemId], references: [id])
+  redeemerUserId    String?
+  user      User?   @relation(fields: [redeemerUserId], references: [id])
 }

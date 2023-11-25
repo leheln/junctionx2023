@@ -63,6 +63,6 @@ export const apiRegistry = (app: Application) => {
     app.get(`${API_PREFIX}/storeItems/:storeItemId`, authentication, storeItemGetApi)
     app.put(`${API_PREFIX}/storeItems/:storeItemId`, authentication, storeItemUpdateApi)
     app.delete(`${API_PREFIX}/storeItems/:storeItemId`, authentication, storeItemDeleteApi)
-    app.delete(`${API_PREFIX}/storeItems/:storeItemId/redeem`, authentication, storeItemRedeemApi)
+    app.post(`${API_PREFIX}/storeItems/:storeItemId/redeem`, authentication, storeItemRedeemApi)
 
 };

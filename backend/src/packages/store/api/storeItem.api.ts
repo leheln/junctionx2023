@@ -3,7 +3,11 @@ import {prisma} from '@/database/prisma';
 
 export const storeItemListApi = async (req: Request, res: Response) => {
 
-    const storeItems = await prisma.storeItem.findMany({})
+    const storeItems = await prisma.storeItem.findMany({
+        include: {
+            redeemers: true
+        }
+    })
     return res.json({ items: storeItems })
 }
 
@@ -102,29 +106,42 @@ export const storeItemRedeemApi = async (req: Request, res: Response) => {
                 id: req.session.userId
             }
         })
-        const storeItem = await prisma.storeItem.delete({
+        const storeItem = await prisma.storeItem.findFirstOrThrow({
             where: {
                 id: storeItemId
             }
         })
 
         if (user.credits >= storeItem.credit) {
-            prisma.user.update({
+            await prisma.user.update({
                 where: {
                     id: user.id
                 },
                 data: {
                     credits: user.credits - storeItem.credit,
-                    storeItems: {
-                        connect: {
-                            id: storeItem.id
-                        }
-                    }
                 }
             })
 
+            const storeItemRedeem = await prisma.storeItemRedeem.create({
+                data: {
+                    storeItem: {
+                        connect: {
+                            id: storeItem.id
+                        }
+                    },
+                    user: {
+                        connect: 
+                        {
+                            id: user.id
+                        }
+                    },
+                }
+            })
+
+            return res.status(200).send(storeItemRedeem)
+        } else {
+            return res.status(400).send({message: "Not enough credits"})
         }
-        return res.status(200).send(storeItem)
     } else {
         return res.status(400).send({
             message: 'Bad request'
