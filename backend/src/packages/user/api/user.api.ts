@@ -101,15 +101,22 @@ export const userGetPassesApi = async (req: Request, res: Response) => {
 }
 
 export const userAddEventAttendance = async (req: Request, res: Response) => {
-    const userId = req.session.id
+    const userId = req.session.userId
     const eventId = req.params.eventId
-
     try {
         const attendance = await prisma.eventAttendance.create({
             data: {
                 completed: false,
-                eventId: eventId,
-                userId: userId,
+                event: {
+                    connect: {
+                        id: eventId
+                    }
+                },
+                user: {
+                    connect: {
+                        id: userId
+                    }
+                }
             }
         })
         return res.json(attendance)
@@ -200,7 +207,7 @@ export const userAddConsumption = async (req: Request, res: Response) => {
     try {
         const user = await prisma.user.findFirstOrThrow({
             where: {
-                id: req.session.id
+                id: req.session.userId
             }
         })
         const consumption = await prisma.consumption.create({
@@ -244,7 +251,7 @@ export const userDeleteConsumption = async (req: Request, res: Response) => {
 }
 
 export const userGetStoreItemsApi = async (req: Request, res: Response) => {
-    const userId = req.session.id
+    const userId = req.session.userId
 
     const storeItems = await prisma.storeItem.findMany({
         where: {

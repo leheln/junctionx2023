@@ -135,7 +135,7 @@ export const eventGetAttendanceApi = async (req: Request, res: Response) => {
 export const eventValidateParticipationApi = async (req: Request, res: Response) => {
     const eventId = req.params.eventId
     const userToValidateParticipationForId = req.params.userId
-    const validatingUserId = req.session.id
+    const validatingUserId = req.session.userId
 
     if (eventId && userToValidateParticipationForId) {
         const userToValidate = await prisma.user.findFirstOrThrow({
