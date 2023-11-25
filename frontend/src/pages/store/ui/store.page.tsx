@@ -23,7 +23,6 @@ export function StorePage() {
             setStoreItems(res.data.items)
         })
     }, [])
-    console.log("nyaaaaaaa", credits)
     return (
         <Layout showNavigation>
             {storeItems.map(si => <StoreItemCard key={si.id} storeItem={si} onRedeem={(si) =>{

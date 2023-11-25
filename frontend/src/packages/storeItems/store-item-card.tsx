@@ -15,7 +15,6 @@ interface StoreItemCardProps {
 
 function StoreItemCard({ storeItem, onRedeem }: StoreItemCardProps) {
   const { id , credits} = useSelector((state: RootState) => state.auth);
-  console.log(storeItem)
   return <Card className="w-[400px]">
     <img src="pic_trulli.jpg" alt="Italian Trulli" />
     <CardTitle>{storeItem.title}</CardTitle>
