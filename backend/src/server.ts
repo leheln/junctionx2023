@@ -9,6 +9,7 @@ import {redis} from '@/database/redis';
 import {apiRegistry, socketRegistry} from '@/registry';
 import logger from '@/core/logger';
 import {createFirstUser} from '@/packages/auth';
+import { populateDatabase } from './packages/auth/logic/populate-database';
 
 
 const server = async () => {
@@ -65,6 +66,8 @@ const server = async () => {
 
     // If this is a new instance of our application, the first user (an admin) is created here
     await createFirstUser();
+
+    await populateDatabase();
 
     // Opening port
     const PORT = Number(process.env.PORT ?? 8000);

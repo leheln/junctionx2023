@@ -38,6 +38,7 @@ export function LoginPage() {
             .then(response => {
                 if (response.data.loggedIn) {
                     dispatch(login({
+                        id: response.data.id,
                         email: response.data.email,
                         firstName: response.data.firstName,
                         lastName: response.data.lastName

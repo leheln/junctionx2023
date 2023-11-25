@@ -12,7 +12,7 @@ model Address {
   zipCode String
   city String
   street String
-  streetNumber String
+  streetNumber Int
   events Event[]
   users User[]
 }

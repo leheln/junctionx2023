@@ -2,6 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 interface AuthState {
     loggedIn: boolean,
+    id?: string
     email?: string,
     firstName?: string,
     lastName?: string,
@@ -12,6 +13,7 @@ const initialAuthState: AuthState = {
 };
 
 interface LoginPayload {
+    id: string,
     email: string,
     firstName: string,
     lastName: string
@@ -24,6 +26,7 @@ const authSlice = createSlice({
         login: (_, action: PayloadAction<LoginPayload>) => {
             return {
                 loggedIn: true,
+                id: action.payload.id,
                 email: action.payload.email,
                 firstName: action.payload.firstName,
                 lastName: action.payload.lastName
