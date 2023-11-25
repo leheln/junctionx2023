@@ -4,7 +4,13 @@ import { prisma } from '@/database/prisma';
 
 export const eventGetListApi = async (req: Request, res: Response) => {
 
-    const events = await prisma.event.findMany({})
+    const events = await prisma.event.findMany({
+        include: {
+            address: true,
+            attendance: true,
+            organizer: true
+        }
+    })
     return res.json({ items: events })
 }
 
@@ -15,7 +21,7 @@ export const eventGetApi = async (req: Request, res: Response) => {
         const event = await prisma.event.findFirst({
             where: {
                 id: eventId,
-            },
+            }
         })
         if (event) {
             return res.json(event)
@@ -88,12 +94,22 @@ export const eventUpdateApi = async (req: Request, res: Response) => {
 export const eventDeleteApi = async (req: Request, res: Response) => {
     const eventId = req.params.eventId
     if (eventId) {
-        const event = await prisma.event.delete({
-            where: {
-                id: eventId
-            }
-        })
-        return res.status(200).send(event)
+        try {
+            await prisma.eventAttendance.deleteMany({
+                where: {
+                    eventId: eventId
+                }
+            })
+            const event = await prisma.event.delete({
+                where: {
+                    id: eventId
+                }
+            })
+            return res.status(200).send(event)
+        } catch (e) {
+            return res.status(500).send({ message: `Server error ${e}` })
+        }
+       
     } else {
         return res.status(400).send({
             message: 'Bad request'

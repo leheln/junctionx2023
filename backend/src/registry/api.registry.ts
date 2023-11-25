@@ -18,6 +18,7 @@ import {
     userAddEventAttendance,
     userAddPass,
     userDeleteConsumption,
+    userDeleteEventAttendance,
     userDeletePass,
     userGetApi,
     userGetConsumptionsApi,
@@ -41,6 +42,7 @@ export const apiRegistry = (app: Application) => {
     app.get(`${API_PREFIX}/users/:userId/consumptions`, authentication, userGetConsumptionsApi);
     app.get(`${API_PREFIX}/users/:userId/passes`, authentication, userGetPassesApi);
     app.post(`${API_PREFIX}/users/:userId/events/:eventId`, authentication, userAddEventAttendance);
+    app.delete(`${API_PREFIX}/users/:userId/events/:eventId`, authentication, userDeleteEventAttendance);
 
     app.post(`${API_PREFIX}/users/:userId/passes`, authentication, userAddPass)
     app.delete(`${API_PREFIX}/users/:userId/passes/:passId`, authentication, userDeletePass)

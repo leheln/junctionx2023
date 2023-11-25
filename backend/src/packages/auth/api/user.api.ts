@@ -120,6 +120,35 @@ export const userAddEventAttendance = async (req: Request, res: Response) => {
     }
 }
 
+export const userDeleteEventAttendance = async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    const eventId = req.params.eventId
+    if (req.session.userId === userId) {
+        try {
+            const attendance = await prisma.eventAttendance.findFirst({
+                where: {
+                    eventId: eventId,
+                    userId: userId
+                }
+            })
+            if (!attendance) {
+                return res.status(404).send({ message: `Attendance not found` })
+            } else {
+                const deletedAttendance = await prisma.eventAttendance.delete({
+                    where: { id: attendance.id }
+                })
+                return res.json(deletedAttendance)
+
+            }
+        } catch (e) {
+            return res.status(500).send({ message: `Server error ${e}` })
+        }
+    } else {
+        return res.status(403).send({
+            message: 'Forbidden'
+        });
+    }
+}
 
 export const userAddPass = async (req: Request, res: Response) => {
     const userId = req.params.userId

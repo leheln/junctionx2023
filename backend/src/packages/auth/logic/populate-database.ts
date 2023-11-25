@@ -11,31 +11,6 @@ export const populateDatabase = async () => {
     }
 
 
-
-    const events: Prisma.EventCreateInput[] = [{
-        credits: 100,
-        date: new Date("2023-11-01T23:25:57Z"),
-        description: "A fun event in the past",
-        image: "",
-        title: "An event",
-        type: "GARBAGE_COLLECTION",
-        address: {
-            create: address
-        }
-    },
-    {
-        credits: 100,
-        date: new Date("2023-11-30T23:25:57Z"),
-        description: "A fun event",
-        image: "",
-        title: "An event",
-        type: "GARBAGE_COLLECTION",
-        address: {
-            create: address
-        }
-    }
-
-    ]
     const userEmail = "user@email.com"
     const user = await prisma.user.findFirst({
         where: {
@@ -71,6 +46,38 @@ export const populateDatabase = async () => {
     }
 
 
+    const events: Prisma.EventCreateInput[] = [{
+        credits: 100,
+        date: new Date("2023-11-01T23:25:57Z"),
+        description: "A fun event in the past",
+        image: "",
+        title: "An event",
+        type: "GARBAGE_COLLECTION",
+        organizer: {
+            connect: {
+                id: createdUser.id
+            }
+        },
+        address: {
+            create: address
+        }
+    },
+    {
+        credits: 100,
+        date: new Date("2023-11-30T23:25:57Z"),
+        description: "A fun event",
+        image: "",
+        title: "An event",
+        type: "GARBAGE_COLLECTION",
+        organizer: {
+            connect: {
+                id: createdUser.id
+            }
+        },
+        address: {
+            create: address
+        }
+    }]
     await prisma.event.deleteMany()
     const createdEvent1 = await prisma.event.create({
         data: events[0]
