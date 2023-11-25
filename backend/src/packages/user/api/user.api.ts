@@ -1,5 +1,5 @@
-import {Request, Response} from 'express';
-import {prisma} from '@/database/prisma';
+import { Request, Response } from 'express';
+import { prisma } from '@/database/prisma';
 
 export const userGetApi = async (req: Request, res: Response) => {
     const userId = req.params.userId
@@ -202,11 +202,25 @@ export const userDeletePass = async (req: Request, res: Response) => {
 export const userAddConsumption = async (req: Request, res: Response) => {
     const consumptionBody = req.body
     try {
+        const user = await prisma.user.findFirstOrThrow({
+            where: {
+                id: req.session.id
+            }
+        })
         const consumption = await prisma.consumption.create({
             data: {
                 ...consumptionBody,
-                user: {connect: {id: req.session.userId}},
+                user: { connect: { id: req.session.userId } },
                 credits: 100 //TODO: Calculate
+            }
+        })
+
+        await prisma.user.update({
+            where: {
+                id: req.session.userId
+            },
+            data: {
+                credits: user.credits + 100
             }
         })
         return res.json(consumption)
