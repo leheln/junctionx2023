@@ -45,7 +45,7 @@ export const apiRegistry = (app: Application) => {
     app.post(`${API_PREFIX}/users/:userId/passes`, authentication, userAddPass)
     app.delete(`${API_PREFIX}/users/:userId/passes/:passId`, authentication, userDeletePass)
     
-    app.post(`${API_PREFIX}/users/:userId/consumptions`, authentication, userAddConsumption)
+    app.post(`${API_PREFIX}/users/consumptions`, authentication, userAddConsumption)
     app.delete(`${API_PREFIX}/users/:userId/consumptions/:consumptionId`, authentication, userDeleteConsumption)
 
     app.get(`${API_PREFIX}/events`, authentication, eventGetListApi)

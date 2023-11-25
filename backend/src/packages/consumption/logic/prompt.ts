@@ -7,7 +7,7 @@ It's type is either: "electricity" or "gas" or "water"
 Please provide me data in JSON format.
 
 Make sure it includes the following properties:
-"type" Type of the utility bill (one of the 3 states previously: "electricity", "gas", "water")
+"type" Type of the utility bill (one of the 3 states previously: "ELECTRICITY", "GAS", "WATER")
 "dateStart" The starting date of the accounting period
 "dateEnd" The ending date of the accounting period
 "amount" The total consumption (do not include the unit of measurement)
