@@ -123,8 +123,34 @@ export const userAddEventAttendance = async (req: Request, res: Response) => {
     } catch (e) {
         return res.status(500).send({ message: `Server error ${e}` })
     }
-
 }
+
+export const userRemoveEventAttendance = async (req: Request, res: Response) => {
+    const userId = req.session.userId
+    const eventId = req.params.eventId
+    try {
+        const attendanceToDelete = await prisma.eventAttendance.findFirstOrThrow({
+            where: {
+                event: {
+                    id: eventId
+                },
+                user: {
+                    id: userId
+                }
+            }
+        })
+
+        const attendanceDeleted = await prisma.eventAttendance.delete({
+            where: {
+                id: attendanceToDelete.id
+            }
+        })
+        return res.json(attendanceDeleted)
+    } catch (e) {
+        return res.status(500).send({ message: `Server error ${e}` })
+    }
+}
+
 
 export const userDeleteEventAttendance = async (req: Request, res: Response) => {
     const userId = req.params.userId

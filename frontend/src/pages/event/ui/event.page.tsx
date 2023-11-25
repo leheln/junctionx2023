@@ -1,18 +1,36 @@
 import {Layout} from '@/packages/layout';
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {SustainabilityEvent} from "@/models/event.ts";
+import {SustainabilityEvent, SustainabilityEventAttendance} from "@/models/event.ts";
 import {axios} from "@/core/axios";
 import SpinLoader from "@/components/spin-loader.tsx";
 import {IoLocationSharp} from "react-icons/io5";
 import {FaUser, FaUsers} from "react-icons/fa";
 import {MdDateRange} from "react-icons/md";
 import {Button} from "@/components/ui/button.tsx";
+import { useSelector } from 'react-redux';
+import { RootState } from '@/core/state';
 
 export function EventPage() {
+    const id = useSelector((state: RootState) => state.auth.id)
     const {eventId} = useParams<{ eventId: string }>()
     const [event, setEvent] = useState<SustainabilityEvent | undefined>(undefined)
-
+    async function createAttendance(event: SustainabilityEvent) {
+        const attendance = await axios.post(`/api/users/events/${event.id}`);
+        const tempEvent = {...event}
+        tempEvent.attendance?.push(attendance.data)
+        setEvent(tempEvent)
+    }
+    
+    async function removeAttendance(event: SustainabilityEvent) {
+        await axios.delete(`/api/users/events/${event.id}`);
+        const tempEvent = {...event}
+        const attendanceIndex = tempEvent.attendance?.findIndex(a => a.eventId === event.id && a.userId === id) ?? -1
+        if (attendanceIndex >= 0) {
+            tempEvent.attendance = [...(tempEvent.attendance?.slice(0,attendanceIndex) || []), ...(tempEvent.attendance?.slice(attendanceIndex + 1, -1)|| [])]
+        }
+        setEvent(tempEvent)
+    }
     useEffect(() => {
         axios.get<SustainabilityEvent>(`/api/events/${eventId}`)
             .then((res) => {
@@ -46,7 +64,8 @@ export function EventPage() {
                     <div className="flex-grow h-1" />
                     {new Date(event.date) < new Date() ?
                         <Button disabled variant="outline">The event has already passed</Button> :
-                        <Button className="gap-1 bg-yellow-500">Join and earn {event.credits} credits</Button>
+                        event.attendance?.find?.(a => a.userId === id)? <Button className="gap-1 bg-yellow-500"  onClick={() => removeAttendance(event)}>Leave event</Button> :
+                        <Button className="gap-1 bg-yellow-500" onClick={() => createAttendance(event)}>Join and earn {event.credits} credits</Button>
                     }
                 </div>
             </Layout>
@@ -59,3 +78,5 @@ export function EventPage() {
         );
     }
 }
+
+

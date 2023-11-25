@@ -27,6 +27,7 @@ import {
     userGetEventsApi,
     userGetPassesApi,
     userGetStoreItemsApi,
+    userRemoveEventAttendance,
     whoamiApi
 } from '@/packages/auth';
 import {tryUtilitiesApi} from '@/packages/consumption/api/try-utilities';
@@ -45,6 +46,7 @@ export const apiRegistry = (app: Application) => {
 
     app.get(`${API_PREFIX}/users/storeItems`, authentication, userGetStoreItemsApi);
     app.post(`${API_PREFIX}/users/events/:eventId`, authentication, userAddEventAttendance);
+    app.delete(`${API_PREFIX}/users/events/:eventId`, authentication, userRemoveEventAttendance);
     app.get(`${API_PREFIX}/users/:userId`, authentication, userGetApi);
     app.get(`${API_PREFIX}/users/:userId/events`, authentication, userGetEventsApi);
     app.get(`${API_PREFIX}/users/:userId/consumptions`, authentication, userGetConsumptionsApi);
