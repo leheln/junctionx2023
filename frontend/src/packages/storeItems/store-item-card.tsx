@@ -4,14 +4,12 @@ import { FaHeart } from "react-icons/fa";
 
 interface StoreItemCardProps {
   storeItem: StoreItem
-  onRedeem: (storeItem: StoreItem) => void
 }
 
 
 
 
-function StoreItemCard({ storeItem, onRedeem }: StoreItemCardProps) {
-  const [layoverVisible, setLayoverVisible] = useState(false)
+function StoreItemCard({ storeItem }: StoreItemCardProps) {
   return <div className="rounded-lg flex flex-col justify-between h-56 bg-cover bg-center overflow-hidden"
     style={{ background: "url(/pic_trulli.jpg)" }}>
     <div className="flex items-center p-3 gap-1" >

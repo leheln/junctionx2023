@@ -41,7 +41,7 @@ export function EventPage() {
     if (event) {
         return (
             <Layout title={event.title} showBack className="flex flex-col">
-                <img src="/pic_trulli.jpg"/>
+                <img src={`data:image/png;base64,${event.image}`}/>
                 <div className="flex-grow flex flex-col p-4 pb-8 gap-2">
                     <div className="flex flex-row gap-2 items-center">
                         <MdDateRange className="w-4 h-4"/>
@@ -64,7 +64,7 @@ export function EventPage() {
                     <div className="flex-grow h-1" />
                     {new Date(event.date) < new Date() ?
                         <Button disabled variant="outline">The event has already passed</Button> :
-                        event.attendance?.find?.(a => a.userId === id)? <Button className="gap-1 bg-yellow-500"  onClick={() => removeAttendance(event)}>Leave event</Button> :
+                        event.attendance?.find?.(a => a.userId === id)? <Button className="gap-1 bg-red-500"  onClick={() => removeAttendance(event)}>Leave event</Button> :
                         <Button className="gap-1 bg-yellow-500" onClick={() => createAttendance(event)}>Join and earn {event.credits} credits</Button>
                     }
                 </div>

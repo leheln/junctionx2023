@@ -103,6 +103,7 @@ model StoreItem {
   title String?
   description String
   userId      String?
+  barcode String?
   creator     User?   @relation(fields: [userId], references: [id])
   redeemers StoreItemRedeem[]
 }

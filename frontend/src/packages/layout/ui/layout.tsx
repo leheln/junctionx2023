@@ -19,7 +19,7 @@ export function Layout({className, title, showBack, showNavigation, children}: L
         <div className="min-h-screen flex flex-col">
             {(title || showBack) && (
                 <header
-                    className="bg-background border-b-[1px] sticky top-0 h-12 px-2 flex justify-between items-center">
+                    className="bg-background border-b-[1px] sticky top-0 h-12 px-2 flex justify-between items-center" style={{zIndex: 2}}>
                     {showBack && <FaChevronLeft className="w-6 h-6" onClick={() => navigate(-1)}/>}
                     <span className="flex-grow text-center text-xl">{title}</span>
                     {showBack && <div className="w-6 h-6"/>}

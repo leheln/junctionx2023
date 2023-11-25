@@ -1,6 +1,13 @@
 import { prisma } from "@/database/prisma"
 import { hashPassword } from "../auth/logic/hash-password"
 import { Prisma } from "@prisma/client"
+import fs from "fs"
+import path from "path"
+
+const barcodeBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/barcode.png"))).toString('base64')
+const greenpeaceGarbageCollectionBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/greenpeace_garbace_collection.png"))).toString('base64')
+const greenPeaceWorkshopBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/greenpeace_work_shop.png"))).toString('base64')
+const molTreePlantingBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/mol_tree_planting.png"))).toString('base64')
 
 export const populateDatabase = async () => {
     const address: Prisma.AddressCreateInput = {
@@ -17,10 +24,41 @@ export const populateDatabase = async () => {
             email: userEmail
         }
     })
+
     try {
+        await prisma.user.delete({ where: { email: "green@green.com" } })
+    } catch { }
+    try {
+        await prisma.user.delete({ where: { email: "mol@mol.com" } })
+    } catch { }
 
+    const greenpeace = await prisma.user.create({
+        data: {
+            email: "green@green.com",
+            address: {
+                create: address
+            },
+            firstName: "",
+            lastName: "Greenpeace",
+            password: "",
+
+        }
+    })
+
+    const mol = await prisma.user.create({
+        data: {
+            email: "mol@mol.com",
+            address: {
+                create: address
+            },
+            firstName: "",
+            lastName: "Mol Nyrt.",
+            password: "",
+
+        }
+    })
+    try {
         if (!user) {
-
             await prisma.user.delete({
                 where: {
                     email: userEmail
@@ -45,37 +83,68 @@ export const populateDatabase = async () => {
         })
     }
 
-
+    greenPeaceWorkshopBase64
     const events: Prisma.EventCreateInput[] = [{
         credits: 100,
-        date: new Date("2023-11-01T23:25:57Z"),
-        description: "A fun event in the past",
-        image: "",
-        title: "An event",
+        date: new Date("2023-11-30T23:25:57Z"),
+        description: "Join Greenpeace in our mission to protect our parks and create a cleaner, greener world! We invite you to be a part of our community garbage collection event, where every piece of collected trash brings us one step closer to a healthier planet.",
+        image: greenpeaceGarbageCollectionBase64,
+        title: "Garbage collection in Kamaraerdő",
         type: "GARBAGE_COLLECTION",
         organizer: {
             connect: {
-                id: createdUser.id
+                id: greenpeace.id
             }
         },
         address: {
-            create: address
+            create: {
+                city: "Budapest",
+                zipCode: "1112",
+                streetNumber: 9,
+                street: "Kamara erdei út"
+            }
         }
     },
     {
         credits: 100,
         date: new Date("2023-11-30T23:25:57Z"),
-        description: "A fun event",
-        image: "",
-        title: "An event",
-        type: "GARBAGE_COLLECTION",
+        description: "Embark on a journey towards a more sustainable and eco-friendly lifestyle with Greenpeace! Join us for an engaging workshop where we'll explore practical tips, share knowledge, and inspire action for a greener, healthier planet.",
+        image: greenpeaceGarbageCollectionBase64,
+        title: "Greenpeace sustainability workshop",
+        type: "WORKSHOP",
         organizer: {
             connect: {
-                id: createdUser.id
+                id: greenpeace.id
             }
         },
         address: {
-            create: address
+            create: {
+                city: "Budapest",
+                zipCode: "1015",
+                streetNumber: 104,
+                street: "János utca"
+            }
+        }
+    },
+    {
+        credits: 100,
+        date: new Date("2023-12-01T23:25:57Z"),
+        image: molTreePlantingBase64,
+        title: "Tree planting by MOL Nyrt.",
+        description: "Join us for a meaningful and eco-friendly initiative as Mol Nyrt. takes a step towards a greener future! In our ongoing commitment to environmental sustainability, we are excited to invite you to participate in our tree-planting event.",
+        type: "TREE_PLANTING",
+        organizer: {
+            connect: {
+                id: mol.id
+            }
+        },
+        address: {
+            create: {
+                city: "Budapest",
+                street: "Eötvös út",
+                streetNumber: 7,
+                zipCode: "1121"
+            }
         }
     }]
     await prisma.event.deleteMany()
@@ -168,6 +237,7 @@ export const populateDatabase = async () => {
                 title: "StoreItem 1",
                 description: "Store item desc",
                 image: "",
+                barcode: barcodeBase64,
                 userId: createdUser.id
             },
             {
@@ -175,6 +245,7 @@ export const populateDatabase = async () => {
                 title: "StoreItem 2",
                 description: "Longer store item desc",
                 image: "",
+                barcode: barcodeBase64,
                 userId: createdUser.id
             }
         ]

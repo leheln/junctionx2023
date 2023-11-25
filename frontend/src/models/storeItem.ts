@@ -7,6 +7,7 @@ export interface StoreItem {
     image: string
     title: string
     description: string
+    barcode: string
     userId: string
     creator?: User
     redeemers?: StoreItemRedeem[]

@@ -27,13 +27,7 @@ export function StorePage() {
     return (
         <Layout showNavigation>
             <div className="flex flex-col gap-4 p-4">
-                {storeItems.map(si => <Link key={si.id!} to={`${si.id!}`}><StoreItemCard storeItem={si} onRedeem={(si) => {
-                    storeItemRedeem(si, credits!)
-                        .then(_ => {
-                            dispatch(creditUpdate({ credits: credits! - si.credit }))
-                        })
-
-                }} /></Link>)}
+                {storeItems.map(si => <Link key={si.id!} to={`${si.id!}`}><StoreItemCard storeItem={si} /></Link>)}
             </div>
         </Layout>
     );

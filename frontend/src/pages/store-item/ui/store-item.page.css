@@ -1,0 +1,5 @@
+
+.overlay {
+    transition-property: visibility, opacity;
+    transition-duration: 1.5s;
+}
