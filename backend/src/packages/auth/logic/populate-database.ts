@@ -165,12 +165,14 @@ export const populateDatabase = async () => {
         data: [
             {
                 credit: 100,
+                title: "StoreItem 1",
                 description: "Store item desc",
                 image: "",
                 userId: createdUser.id
             },
             {
                 credit: 100,
+                title: "StoreItem 2",
                 description: "Longer store item desc",
                 image: "",
                 userId: createdUser.id

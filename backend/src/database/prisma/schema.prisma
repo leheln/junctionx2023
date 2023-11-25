@@ -99,6 +99,7 @@ model StoreItem {
   id          String  @id @default(uuid())
   credit      Int
   image       String
+  title String?
   description String
   userId      String?
   creator     User?   @relation(fields: [userId], references: [id])
