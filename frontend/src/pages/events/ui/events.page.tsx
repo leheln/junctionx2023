@@ -5,6 +5,7 @@ import EventCard from '@/packages/events/event-card';
 import { Layout } from '@/packages/layout';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import {Link} from "react-router-dom";
 
 function leaveEvent(eventId: string, userId: string) {
     axios.delete(`/api/users/${userId}/events/${eventId}`)
@@ -13,7 +14,6 @@ function leaveEvent(eventId: string, userId: string) {
 function joinEvent(eventId: string, userId: string) {
     return axios.post(`/api/users/${userId}/events/${eventId}`).then(res => res.data)
 }
-
 
 export function EventsPage() {
     const { id } = useSelector((state: RootState) => state.auth);
@@ -25,9 +25,8 @@ export function EventsPage() {
     }, [])
     return (
         <Layout showNavigation>
-
-            <div style={{ display: "flex", gap: "10px" }}>
-                {events.map(e => <EventCard event={e} onLeave={(e) => {
+            <div className="flex flex-col gap-4 p-4">
+                {events.map(e => <Link key={e.id} to={`${e.id}`}><EventCard event={e} onLeave={(e) => {
                     leaveEvent(e.id!, id!)
                     const eventIndex = events.findIndex(ei => ei.id === e.id)
                     const tempEvents = [...events]
@@ -44,8 +43,7 @@ export function EventsPage() {
                         tempEvents[eventIndex].attendance?.push(data)
                         setEvents(tempEvents)
                     })
-
-                }} ></EventCard>)}
+                }} ></EventCard></Link>)}
             </div>
 
         </Layout >

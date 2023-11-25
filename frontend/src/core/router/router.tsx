@@ -5,6 +5,7 @@ import {StorePage} from 'src/pages/store';
 import {LoginPage, ProtectedRoute} from '@/packages/auth';
 import {CodePage} from "@/pages/code";
 import {AddUtilitiesPage} from "@/pages/add-utilities";
+import {EventPage} from "@/pages/event";
 
 export function Router() {
     return (
@@ -23,6 +24,12 @@ export function Router() {
                 <Route path={'/events'} element={
                     <ProtectedRoute>
                         <EventsPage/>
+                    </ProtectedRoute>
+                }/>
+
+                <Route path={'/events/:eventId'} element={
+                    <ProtectedRoute>
+                        <EventPage/>
                     </ProtectedRoute>
                 }/>
 

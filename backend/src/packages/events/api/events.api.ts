@@ -3,13 +3,7 @@ import {prisma} from '@/database/prisma';
 
 export const eventGetListApi = async (req: Request, res: Response) => {
 
-    const events = await prisma.event.findMany({
-        include: {
-            address: true,
-            attendance: true,
-            organizer: true
-        }
-    })
+    const events = await prisma.event.findMany({})
     return res.json({ items: events })
 }
 
@@ -20,6 +14,11 @@ export const eventGetApi = async (req: Request, res: Response) => {
         const event = await prisma.event.findFirst({
             where: {
                 id: eventId,
+            },
+            include: {
+                address: true,
+                attendance: true,
+                organizer: true
             }
         })
         if (event) {
