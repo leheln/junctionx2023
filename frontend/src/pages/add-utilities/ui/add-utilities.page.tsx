@@ -4,6 +4,7 @@ import {Button} from "@/components/ui/button.tsx";
 import axios from "axios";
 import SpinLoader from "@/components/spin-loader.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
+import {Card} from "@/components/ui/card.tsx";
 
 interface UtilitiesData {
     type: 'electricity' | 'water' | 'gas'
@@ -23,7 +24,7 @@ export function AddUtilitiesPage() {
         reader.readAsDataURL(file)
         reader.onloadend = () => {
             const data = {image: reader.result}
-            axios.post('/api/try-utilities', data)
+            axios.post('/api/consumption/try-utilities', data)
                 .then(response => {
                     setData(response.data)
                     setLoading(false)
@@ -34,13 +35,22 @@ export function AddUtilitiesPage() {
                         title: 'An error has occurred.',
                         description: 'Try reloading the page. If the issue persists please contact support.'
                     })
+                    setLoading(false)
                 })
         }
-    };
+    }
+
+    const onRetry = () => {
+        setData(undefined)
+    }
+
+    const onAdd = () => {
+
+    }
 
     return (
         <Layout title="Add utility bill" showBack className="flex flex-col p-4 justify-center items-center gap-4">
-            {data ? <Accept data={data}/> : <Upload onFile={onFile}/>}
+            {data ? <Accept data={data} onRetry={onRetry} onAdd={onAdd}/> : <Upload onFile={onFile}/>}
             {loading && <SpinLoader size={32}/>}
         </Layout>
     );
@@ -61,13 +71,21 @@ function Upload({onFile}: UploadProps) {
 
 interface AcceptProps {
     data: UtilitiesData
+    onRetry: () => void
+    onAdd: () => void
 }
 
-function Accept({data}: AcceptProps) {
+function Accept({data, onRetry, onAdd}: AcceptProps) {
     return <>
-        type: {data.type}<br/>
-        start: {data.dateStart}<br/>
-        end: {data.dateEnd}<br/>
-        amount: {data.amount}
+        <Card className="flex flex-col px-4 py-2 w-48 items-center gap-2">
+            <div className="text-xl">Add {data.type}</div>
+            <div><b>From:</b> {data.dateStart}</div>
+            <div><b>To:</b> {data.dateEnd}</div>
+            <div>{data.amount} kWh</div>
+        </Card>
+        <div className="flex w-48 gap-4">
+            <Button className="basis-0 flex-grow" variant="outline" onClick={onRetry}>Retry</Button>
+            <Button className="basis-0 flex-grow" onClick={onAdd}>Add</Button>
+        </div>
     </>
 }
