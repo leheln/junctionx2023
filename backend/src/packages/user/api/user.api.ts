@@ -247,3 +247,13 @@ export const userDeleteConsumption = async (req: Request, res: Response) => {
     }
 }
 
+export const userGetStoreItemsApi = async (req: Request, res: Response) => {
+    const userId = req.session.id
+
+    const storeItems = await prisma.storeItem.findMany({
+        where: {
+            userId
+        }
+    })
+    return res.status(200).send({items: storeItems})
+}
