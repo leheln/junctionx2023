@@ -5,17 +5,19 @@ import SpinLoader from "@/components/spin-loader.tsx";
 import {toast} from "@/components/ui/use-toast.ts";
 import {Card} from "@/components/ui/card.tsx";
 import {axios} from '@/core/axios';
+import {useNavigate} from "react-router-dom";
 
-interface UtilitiesData {
-    type: 'electricity' | 'water' | 'gas'
+interface ConsumptionData {
+    type: 'ELECTRICITY' | 'WATER' | 'GAS'
     dateStart: string,
     dateEnd: string,
     amount: number
 }
 
 export function AddUtilitiesPage() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState<UtilitiesData | undefined>(undefined);
+    const [data, setData] = useState<ConsumptionData | undefined>(undefined);
 
     const onFile = (e: ChangeEvent<HTMLInputElement>) => {
         setLoading(true)
@@ -45,13 +47,30 @@ export function AddUtilitiesPage() {
     }
 
     const onAdd = () => {
-
+        axios.post('/api/users/consumptions/', data)
+            .then(() => {
+                navigate(-1)
+                setLoading(false)
+            })
+            .catch(() => {
+                toast({
+                    variant: 'destructive',
+                    title: 'An error has occurred.',
+                    description: 'Try reloading the page. If the issue persists please contact support.'
+                })
+                setLoading(false)
+            })
     }
 
     return (
         <Layout title="Add utility bill" showBack className="flex flex-col p-4 justify-center items-center gap-4">
-            {data ? <Accept data={data} onRetry={onRetry} onAdd={onAdd}/> : <Upload onFile={onFile}/>}
-            {loading && <SpinLoader size={32}/>}
+            {loading ?
+                <SpinLoader size={32}/> :
+                (data ?
+                    <Accept data={data} onRetry={onRetry} onAdd={onAdd}/> :
+                    <Upload onFile={onFile}/>
+                )
+            }
         </Layout>
     );
 }
@@ -70,7 +89,7 @@ function Upload({onFile}: UploadProps) {
 }
 
 interface AcceptProps {
-    data: UtilitiesData
+    data: ConsumptionData
     onRetry: () => void
     onAdd: () => void
 }
