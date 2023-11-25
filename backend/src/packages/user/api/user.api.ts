@@ -101,26 +101,22 @@ export const userGetPassesApi = async (req: Request, res: Response) => {
 }
 
 export const userAddEventAttendance = async (req: Request, res: Response) => {
-    const userId = req.params.userId
+    const userId = req.session.id
     const eventId = req.params.eventId
-    if (req.session.userId === userId) {
-        try {
-            const attendance = await prisma.eventAttendance.create({
-                data: {
-                    completed: false,
-                    eventId: eventId,
-                    userId: userId,
-                }
-            })
-            return res.json(attendance)
-        } catch (e) {
-            return res.status(500).send({ message: `Server error ${e}` })
-        }
-    } else {
-        return res.status(403).send({
-            message: 'Forbidden'
-        });
+
+    try {
+        const attendance = await prisma.eventAttendance.create({
+            data: {
+                completed: false,
+                eventId: eventId,
+                userId: userId,
+            }
+        })
+        return res.json(attendance)
+    } catch (e) {
+        return res.status(500).send({ message: `Server error ${e}` })
     }
+
 }
 
 export const userDeleteEventAttendance = async (req: Request, res: Response) => {
@@ -255,5 +251,5 @@ export const userGetStoreItemsApi = async (req: Request, res: Response) => {
             userId
         }
     })
-    return res.status(200).send({items: storeItems})
+    return res.status(200).send({ items: storeItems })
 }

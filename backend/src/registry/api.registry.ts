@@ -7,6 +7,7 @@ import {
     eventGetAttendanceApi,
     eventGetListApi,
     eventUpdateApi,
+    eventValidateParticipationApi,
     loginApi,
     logoutApi,
     storeItemCreateApi,
@@ -43,11 +44,11 @@ export const apiRegistry = (app: Application) => {
     app.post(`${API_PREFIX}/qr/get`, authentication, getQRApi);
 
     app.get(`${API_PREFIX}/users/storeItems`, authentication, userGetStoreItemsApi);
+    app.post(`${API_PREFIX}/users/events/:eventId`, authentication, userAddEventAttendance);
     app.get(`${API_PREFIX}/users/:userId`, authentication, userGetApi);
     app.get(`${API_PREFIX}/users/:userId/events`, authentication, userGetEventsApi);
     app.get(`${API_PREFIX}/users/:userId/consumptions`, authentication, userGetConsumptionsApi);
     app.get(`${API_PREFIX}/users/:userId/passes`, authentication, userGetPassesApi);
-    app.post(`${API_PREFIX}/users/:userId/events/:eventId`, authentication, userAddEventAttendance);
     app.delete(`${API_PREFIX}/users/:userId/events/:eventId`, authentication, userDeleteEventAttendance);
 
     app.post(`${API_PREFIX}/users/:userId/passes`, authentication, userAddPass)
@@ -62,6 +63,7 @@ export const apiRegistry = (app: Application) => {
     app.get(`${API_PREFIX}/events/:eventId/attendance`, authentication, eventGetAttendanceApi)
     app.put(`${API_PREFIX}/events/:eventId`, authentication, eventUpdateApi)
     app.delete(`${API_PREFIX}/events/:eventId`, authentication, eventDeleteApi)
+    app.post(`${API_PREFIX}/events/:eventId/users/:userId/validateParticipation`, authentication, eventValidateParticipationApi)
 
     app.get(`${API_PREFIX}/storeItems`, authentication, storeItemListApi)
     app.post(`${API_PREFIX}/storeItems`, authentication, storeItemCreateApi)

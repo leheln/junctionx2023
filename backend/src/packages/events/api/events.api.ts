@@ -130,3 +130,56 @@ export const eventGetAttendanceApi = async (req: Request, res: Response) => {
         });
     }
 }
+
+
+export const eventValidateParticipationApi = async (req: Request, res: Response) => {
+    const eventId = req.params.eventId
+    const userToValidateParticipationForId = req.params.userId
+    const validatingUserId = req.session.id
+
+    if (eventId && userToValidateParticipationForId) {
+        const userToValidate = await prisma.user.findFirstOrThrow({
+            where: {
+                id: userToValidateParticipationForId
+            }
+        })
+        const event = await prisma.event.findFirstOrThrow({
+            where: {
+                id: eventId,
+                organizerId: validatingUserId,
+            }
+        })
+
+        const attendance = await prisma.eventAttendance.findFirstOrThrow({
+            where: {
+                eventId: eventId,
+                userId: userToValidateParticipationForId,
+            }
+        })
+
+        await prisma.eventAttendance.update({
+            where: {
+                id: attendance.id,
+                eventId: eventId,
+                userId: userToValidateParticipationForId
+            },
+            data: {
+                completed: true
+            }
+        })
+
+        await prisma.user.update({
+            where: {
+                id: userToValidateParticipationForId
+            },
+            data: {
+                credits: userToValidate.credits + event.credits
+            }
+        })
+        return res.status(200).send(attendance)
+    } else {
+        return res.status(400).send({
+            message: 'Bad request'
+        });
+    }
+}
