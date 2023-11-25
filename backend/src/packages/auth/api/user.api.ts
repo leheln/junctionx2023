@@ -1,4 +1,4 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import logger from '@/core/logger';
 import { prisma } from '@/database/prisma';
 
@@ -11,13 +11,13 @@ export const userGetApi = async (req: Request, res: Response) => {
             },
         })
         if (user) {
-            const {password, ...rest} = user
+            const { password, ...rest } = user
             return res.json(rest)
         } else {
             return res.status(404).send({
                 message: 'User not found'
             });
-        } 
+        }
     } else {
         return res.status(403).send({
             message: 'Forbidden'
@@ -90,6 +90,29 @@ export const userGetPassesApi = async (req: Request, res: Response) => {
             id: userId,
             passes
         })
+    } else {
+        return res.status(403).send({
+            message: 'Forbidden'
+        });
+    }
+}
+
+export const userAddEventAttendance = async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    const eventId = req.params.eventId
+    if (req.session.userId === userId) {
+        try {
+            const attendance = await prisma.eventAttendance.create({
+                data: {
+                    completed: false,
+                    eventId: eventId,
+                    userId: userId,
+                }
+            })
+            return res.json(attendance)
+        } catch (e) {
+            return res.status(500).send({ message: `Server error ${e}` })
+        }
     } else {
         return res.status(403).send({
             message: 'Forbidden'
