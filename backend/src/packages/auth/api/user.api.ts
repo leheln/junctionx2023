@@ -120,3 +120,90 @@ export const userAddEventAttendance = async (req: Request, res: Response) => {
     }
 }
 
+
+export const userAddPass = async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    const passBody = req.body
+    if (req.session.userId === userId) {
+        try {
+            const pass = await prisma.pass.create({
+                data: {
+                    ...passBody,
+                    userId,
+                }
+            })
+            return res.json(pass)
+        } catch (e) {
+            return res.status(500).send({ message: `Server error ${e}` })
+        }
+    } else {
+        return res.status(403).send({
+            message: 'Forbidden'
+        });
+    }
+}
+
+export const userDeletePass = async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    const passId = req.params.passId
+    if (req.session.userId === userId && passId) {
+        try {
+            const pass = await prisma.pass.delete({
+                where: {
+                    id: passId,
+                    userId: userId
+                }
+            })
+
+            return res.status(200).send(pass)
+        } catch (e) {
+            return res.status(500).send({ message: `Server error ${e}` })
+        }
+    } else {
+        return res.status(403).send({
+            message: 'Forbidden'
+        });
+    }
+}
+
+
+export const userAddConsumption = async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    const consumptionBody = req.body
+    if (req.session.userId === userId) {
+        try {
+            const consumption = await prisma.consumption.create({
+                data: {
+                    ...consumptionBody,
+                    userId: userId,
+                }
+            })
+            return res.json(consumption)
+        } catch (e) {
+            return res.status(500).send({ message: `Server error ${e}` })
+        }
+    } else {
+        return res.status(403).send({
+            message: 'Forbidden'
+        });
+    }
+}
+
+export const userDeleteConsumption = async (req: Request, res: Response) => {
+    const userId = req.params.userId
+    const consumptionId = req.params.consumptionId
+    if (req.session.userId === userId && consumptionId) {
+        const consumption = await prisma.consumption.delete({
+            where: {
+                id: consumptionId,
+                userId: userId
+            }
+        })
+        return res.status(200).send(consumption)
+    } else {
+        return res.status(403).send({
+            message: 'Forbidden'
+        });
+    }
+}
+

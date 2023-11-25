@@ -5,13 +5,7 @@ import { prisma } from '@/database/prisma';
 export const eventGetListApi = async (req: Request, res: Response) => {
 
     const events = await prisma.event.findMany({})
-    if (events) {
-        return res.json({ items: events })
-    } else {
-        return res.status(404).send({
-            message: 'User not found'
-        });
-    }
+    return res.json({ items: events })
 }
 
 
@@ -55,7 +49,7 @@ export const eventCreateApi = async (req: Request, res: Response,) => {
             })
             return res.status(201).send(createdEvent)
         } catch (e) {
-            return res.status(500).send({message: `Server error ${e}`})
+            return res.status(500).send({ message: `Server error ${e}` })
         }
 
 
@@ -82,7 +76,7 @@ export const eventUpdateApi = async (req: Request, res: Response) => {
         }
 
         catch (e) {
-            return res.status(500).send({message: `Server error ${e}`})
+            return res.status(500).send({ message: `Server error ${e}` })
         }
     } else {
         return res.status(400).send({

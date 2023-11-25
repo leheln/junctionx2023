@@ -1,0 +1,1 @@
+export {recognize} from './logic/recognize';

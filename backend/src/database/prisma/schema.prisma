@@ -8,55 +8,54 @@ datasource db {
 }
 
 model Address {
-  id        String @id @default(uuid())
-  zipCode String
-  city String
-  street String
+  id           String  @id @default(uuid())
+  zipCode      String
+  city         String
+  street       String
   streetNumber Int
-  events Event[]
-  users User[]
+  events       Event[]
+  users        User[]
 }
 
 model User {
-  id        String @id @default(uuid())
-  email     String @unique
-  password  String
-  firstName String
-  lastName  String
-  adressId String?
-  address Address? @relation(fields: [adressId], references: [id])
+  id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
+  firstName       String
+  lastName        String
+  adressId        String?
+  address         Address?          @relation(fields: [adressId], references: [id])
   organizedEvents Event[]
-  attendances EventAttendance[]
-  consumptions Consumption[]
-  passes Pass[]
-  storeItems StoreItem[]
-  credits Int @default(0)
-
+  attendances     EventAttendance[]
+  consumptions    Consumption[]
+  passes          Pass[]
+  storeItems      StoreItem[]
+  credits         Int               @default(0)
 }
 
 model Event {
-  id   String @id @default(uuid())
+  id          String            @id @default(uuid())
   organizerId String?
-  organizer User? @relation(fields: [organizerId], references: [id])
-  credits Int
-  title String
+  organizer   User?             @relation(fields: [organizerId], references: [id])
+  credits     Int
+  title       String
   description String
-  image String
-  adressId String?
-  address Address? @relation(fields: [adressId], references: [id])
-  date DateTime   
-  type EventType
-  attendance EventAttendance[]
+  image       String
+  adressId    String?
+  address     Address?          @relation(fields: [adressId], references: [id])
+  date        DateTime
+  type        EventType
+  attendance  EventAttendance[]
 }
 
 model EventAttendance {
-  id   String @id @default(uuid())
-  eventId String?
-  event Event? @relation(fields: [eventId], references: [id])
-  userId String?
-  user User? @relation(fields: [userId], references: [id])
+  id        String  @id @default(uuid())
+  eventId   String?
+  event     Event?  @relation(fields: [eventId], references: [id])
+  userId    String?
+  user      User?   @relation(fields: [userId], references: [id])
   completed Boolean
-} 
+}
 
 enum EventType {
   GARBAGE_COLLECTION
@@ -65,14 +64,14 @@ enum EventType {
 }
 
 model Consumption {
-  id   String @id @default(uuid())
-  userId String?
-  user User? @relation(fields: [userId], references: [id])
+  id        String          @id @default(uuid())
+  userId    String?
+  user      User?           @relation(fields: [userId], references: [id])
   dateStart DateTime
-  dateEnd DateTime
-  amount Int
-  credits Int
-  type ConsumptionType
+  dateEnd   DateTime
+  amount    Int
+  credits   Int
+  type      ConsumptionType
 }
 
 enum ConsumptionType {
@@ -82,13 +81,13 @@ enum ConsumptionType {
 }
 
 model Pass {
-  id   String @id @default(uuid())
-  userId String?
-  user User? @relation(fields: [userId], references: [id])
-  type PassType
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  type      PassType
   dateStart DateTime
-  dateEnd DateTime
-  credits Int
+  dateEnd   DateTime
+  credits   Int
 }
 
 enum PassType {
@@ -96,19 +95,11 @@ enum PassType {
   BIKE_PASS
 }
 
-
 model StoreItem {
-  id   String @id @default(uuid())
-  credit Int
-  image String
+  id          String  @id @default(uuid())
+  credit      Int
+  image       String
   description String
-  userId String?
-  creator User? @relation(fields: [userId], references: [id])
+  userId      String?
+  creator     User?   @relation(fields: [userId], references: [id])
 }
-
-
-
-
-
-
-
