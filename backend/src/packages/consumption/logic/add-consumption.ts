@@ -6,7 +6,7 @@ export async function addConsumption (userId: string, consumptionRaw: Consumptio
         await prisma.consumption.create({
             data: {
                 userId: userId,
-                type: consumptionRaw.type,
+                type: consumptionRaw.type as any,
                 dateStart: consumptionRaw.dateStart,
                 dateEnd: consumptionRaw.dateEnd,
                 amount: consumptionRaw.amount,

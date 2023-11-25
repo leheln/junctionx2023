@@ -197,24 +197,18 @@ export const userDeletePass = async (req: Request, res: Response) => {
 
 
 export const userAddConsumption = async (req: Request, res: Response) => {
-    const userId = req.params.userId
     const consumptionBody = req.body
-    if (req.session.userId === userId) {
-        try {
-            const consumption = await prisma.consumption.create({
-                data: {
-                    ...consumptionBody,
-                    userId: userId,
-                }
-            })
-            return res.json(consumption)
-        } catch (e) {
-            return res.status(500).send({ message: `Server error ${e}` })
-        }
-    } else {
-        return res.status(403).send({
-            message: 'Forbidden'
-        });
+    try {
+        const consumption = await prisma.consumption.create({
+            data: {
+                ...consumptionBody,
+                user: {connect: {id: req.session.userId}},
+                credits: 100 //TODO: Calculate
+            }
+        })
+        return res.json(consumption)
+    } catch (e) {
+        return res.status(500).send({ message: `Server error ${e}` })
     }
 }
 
