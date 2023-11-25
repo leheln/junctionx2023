@@ -33,6 +33,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@reduxjs/toolkit": "^1.9.5",
+    "@yudiel/react-qr-scanner": "^1.2.3",
     "axios": "^1.6.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

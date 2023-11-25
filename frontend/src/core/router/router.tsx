@@ -6,6 +6,7 @@ import {LoginPage, ProtectedRoute} from '@/packages/auth';
 import {CodePage} from "@/pages/code";
 import {AddUtilitiesPage} from "@/pages/add-utilities";
 import {EventPage} from "@/pages/event";
+import {ScanPage} from '@/pages/scan';
 import { StoreItemPage } from '@/pages/store-item';
 
 export function Router() {
@@ -48,6 +49,12 @@ export function Router() {
                 <Route path={'/code'} element={
                     <ProtectedRoute>
                         <CodePage/>
+                    </ProtectedRoute>
+                }/>
+
+                <Route path={'/scan'} element={
+                    <ProtectedRoute>
+                        <ScanPage/>
                     </ProtectedRoute>
                 }/>
 
