@@ -10,6 +10,7 @@ const greenPeaceWorkshopBase64 = Buffer.from(fs.readFileSync(path.resolve("./src
 const molTreePlantingBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/mol_tree_planting.png"))).toString('base64')
 const communityGarbageCollectionBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/community_garbage_collection.png"))).toString('base64')
 const bubiDiscountBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/bubi_discount.png"))).toString('base64')
+const greenpeaceShirtBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/greenpeace_shirt.png"))).toString('base64')
 
 export const populateDatabase = async () => {
     const address: Prisma.AddressCreateInput = {
@@ -249,10 +250,10 @@ export const populateDatabase = async () => {
                 userId: mol.id
             },
             {
-                credit: 100,
-                title: "StoreItem 2",
-                description: "Longer store item desc",
-                image: "",
+                credit: 800,
+                title: "Greenpeace shirts 30% discount",
+                description: "Calling all eco-warriors and sustainability enthusiasts! We're thrilled to reward our engaged users on Sustainify with an exclusive 30% discount on Greenpeace shirts. Now, you can proudly wear your commitment to a greener planet.",
+                image: greenpeaceShirtBase64,
                 barcode: barcodeBase64,
                 userId: createdUser.id
             }
