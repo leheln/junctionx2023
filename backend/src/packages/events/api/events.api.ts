@@ -160,26 +160,30 @@ export const eventValidateParticipationApi = async (req: Request, res: Response)
                 userId: userToValidateParticipationForId,
             }
         })
+        try {
 
-        await prisma.eventAttendance.update({
-            where: {
-                id: attendance.id,
-                eventId: eventId,
-                userId: userToValidateParticipationForId
-            },
-            data: {
-                completed: true
-            }
-        })
-
-        await prisma.user.update({
-            where: {
-                id: userToValidateParticipationForId
-            },
-            data: {
-                credits: userToValidate.credits + event.credits
-            }
-        })
+            await prisma.eventAttendance.update({
+                where: {
+                    id: attendance.id,
+                    eventId: eventId,
+                    userId: userToValidateParticipationForId,
+                    completed: false
+                },
+                data: {
+                    completed: true
+                }
+            })
+            await prisma.user.update({
+                where: {
+                    id: userToValidateParticipationForId
+                },
+                data: {
+                    credits: userToValidate.credits + event.credits
+                }
+            })
+        } catch {}
+            
+        
         return res.status(200).send(attendance)
     } else {
         return res.status(400).send({
