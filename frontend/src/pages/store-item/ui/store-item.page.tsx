@@ -31,6 +31,9 @@ export function StoreItemPage() {
 
 
     useEffect(() => {
+        axios.get(`/api/users/${id}`).then(r => {
+            dispatch(creditUpdate({credits: r.data.credits}))
+        })
         axios.get<StoreItem>(`/api/storeItems/${storeItemId}`)
             .then((res) => {
                 setStoreItem(res.data)

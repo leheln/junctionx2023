@@ -1,6 +1,6 @@
 import {RootState} from '@/core/state';
 import {Layout} from '@/packages/layout';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {axios} from "@/core/axios";
@@ -12,18 +12,23 @@ import {SustainabilityEvent} from "@/models/event.ts";
 import {MdDateRange, MdOutlinePedalBike} from "react-icons/md";
 import {Pass, PassType} from "@/models/pass.ts";
 import {FaBusAlt} from "react-icons/fa";
+import {creditUpdate} from "@/packages/auth/state/auth.state.ts";
 
 type Utilities = {
     [name: string]: Consumption
 }
 
 export function HomePage() {
+    const dispatch = useDispatch();
     const {id, credits} = useSelector((state: RootState) => state.auth);
     const [event, setEvent] = useState<SustainabilityEvent | undefined>(undefined)
     const [utilities, setUtilities] = useState<Utilities>({})
     const [passes, setPasses] = useState<Pass[]>([])
 
     useEffect(() => {
+        axios.get(`/api/users/${id}`).then(r => {
+            dispatch(creditUpdate({credits: r.data.credits}))
+        })
         axios.get<{
             items: SustainabilityEvent[]
         }>("/api/events")
