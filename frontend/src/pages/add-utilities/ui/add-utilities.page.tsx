@@ -7,7 +7,6 @@ import {Card} from '@/components/ui/card.tsx';
 import {axios} from '@/core/axios';
 import {useNavigate} from 'react-router-dom';
 import {ConsumptionType} from "@/models/consumption.ts";
-import {undefined} from "zod";
 
 interface ConsumptionData {
     type: ConsumptionType
@@ -19,7 +18,7 @@ interface ConsumptionData {
 export function AddUtilitiesPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState<ConsumptionData | undefined>({amount: 0, dateEnd: "", dateStart: "", type: ConsumptionType.ELECTRICITY});
+    const [data, setData] = useState<ConsumptionData | undefined>(undefined);
 
     const onFile = (e: ChangeEvent<HTMLInputElement>) => {
         setLoading(true);
