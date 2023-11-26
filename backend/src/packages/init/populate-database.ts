@@ -180,13 +180,6 @@ export const populateDatabase = async () => {
 
     const consumptions: any[] = [
         {
-            amount: 100,
-            credits: 800,
-            dateStart: new Date("2023-10-01T23:25:57Z"),
-            dateEnd: new Date("2023-10-30T23:25:57Z"),
-            type: "ELECTRICITY"
-        },
-        {
             amount: 35,
             credits: 1170,
             dateStart: new Date("2023-10-01T23:25:57Z"),

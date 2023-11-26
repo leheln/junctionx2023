@@ -6,6 +6,9 @@ export const eventGetListApi = async (req: Request, res: Response) => {
     const events = await prisma.event.findMany({
         include: {
             attendance: true
+        },
+        orderBy: {
+            date: "asc"
         }
     })
     return res.json({ items: events })
