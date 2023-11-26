@@ -1,5 +1,5 @@
-import {Request, Response} from 'express';
-import {prisma} from '@/database/prisma';
+import { Request, Response } from 'express';
+import { prisma } from '@/database/prisma';
 
 export const eventGetListApi = async (req: Request, res: Response) => {
 
@@ -114,7 +114,7 @@ export const eventDeleteApi = async (req: Request, res: Response) => {
         } catch (e) {
             return res.status(500).send({ message: `Server error ${e}` })
         }
-       
+
     } else {
         return res.status(400).send({
             message: 'Bad request'
@@ -143,57 +143,60 @@ export const eventValidateParticipationApi = async (req: Request, res: Response)
     const eventId = req.params.eventId
     const userToValidateParticipationForId = req.params.userId
     const validatingUserId = req.session.userId
+    try {
 
-    if (eventId && userToValidateParticipationForId) {
-        const userToValidate = await prisma.user.findFirstOrThrow({
-            where: {
-                id: userToValidateParticipationForId
-            }
-        })
-        const event = await prisma.event.findFirstOrThrow({
-            where: {
-                id: eventId,
-                organizerId: validatingUserId,
-            }
-        })
-
-        const attendance = await prisma.eventAttendance.findFirstOrThrow({
-            where: {
-                eventId: eventId,
-                userId: userToValidateParticipationForId,
-            }
-        })
-        if (attendance.completed) {
-            return res.status(200).send(attendance)
-        }
-        try {
-
-            await prisma.eventAttendance.update({
-                where: {
-                    id: attendance.id,
-                    eventId: eventId,
-                    userId: userToValidateParticipationForId,
-                    completed: false
-                },
-                data: {
-                    completed: true
-                }
-            })
-            await prisma.user.update({
+        if (eventId && userToValidateParticipationForId) {
+            const userToValidate = await prisma.user.findFirstOrThrow({
                 where: {
                     id: userToValidateParticipationForId
-                },
-                data: {
-                    credits: userToValidate.credits + event.credits
                 }
             })
-        } catch {}
-            
-        
-        return res.status(200).send(attendance)
-    } else {
-        return res.status(400).send({
-            message: 'Bad request'
-        });
+            const event = await prisma.event.findFirstOrThrow({
+                where: {
+                    id: eventId,
+                    organizerId: validatingUserId,
+                }
+            })
+
+            const attendance = await prisma.eventAttendance.findFirstOrThrow({
+                where: {
+                    eventId: eventId,
+                    userId: userToValidateParticipationForId,
+                }
+            })
+            if (attendance.completed) {
+                return res.status(200).send(attendance)
+            }
+            try {
+
+                await prisma.eventAttendance.update({
+                    where: {
+                        id: attendance.id,
+                        eventId: eventId,
+                        userId: userToValidateParticipationForId,
+                        completed: false
+                    },
+                    data: {
+                        completed: true
+                    }
+                })
+                await prisma.user.update({
+                    where: {
+                        id: userToValidateParticipationForId
+                    },
+                    data: {
+                        credits: userToValidate.credits + event.credits
+                    }
+                })
+            } catch { }
+
+            return res.status(200).send(attendance)
+        } else {
+            return res.status(400).send({
+                message: 'Bad request'
+            });
+        }
+    } catch (e) {
+        return res.status(500).send({ message: "Server error" })
     }
 }

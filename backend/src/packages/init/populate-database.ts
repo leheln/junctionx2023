@@ -85,7 +85,30 @@ export const populateDatabase = async () => {
             }
         })
     }
-
+    let fixUser = await prisma.user.findFirst({
+        where: {
+            id: "00000000000000000000"
+        }
+    })
+    try {
+        if(!fixUser) {
+            fixUser = await prisma.user.create({
+                data: {
+                    id: "00000000000000000000",
+                    email: "fix@ookie.com",
+                    firstName: "Fix",
+                    lastName: "Felix",
+                    address: {
+                        create: address
+                    },
+                    credits: 0,
+                    password: await hashPassword('admin'),
+    
+                }
+            })
+        }
+    } catch {}
+   
     const events: Prisma.EventCreateInput[] = [{
         credits: 200,
         date: new Date("2023-11-30T10:00:00Z"),
@@ -171,11 +194,22 @@ export const populateDatabase = async () => {
         }
     }]
     await prisma.event.deleteMany()
-    for (const event of events) {
+    for (const event of events.slice(0, -2)) {
         await prisma.event.create({
             data: event
         })
     }
+    const userEvent = await prisma.event.create({
+        data: events[events.length - 1]
+        
+    })
+    await prisma.eventAttendance.create({
+        data: {
+            completed: false,
+            eventId: userEvent.id,
+            userId: fixUser.id
+        }
+    })
     
 
     const consumptions: any[] = [
@@ -230,7 +264,7 @@ export const populateDatabase = async () => {
             ...passes[1]
         }
     })
-
+    
     await prisma.storeItem.deleteMany()
     await prisma.storeItem.createMany({
         data: [
