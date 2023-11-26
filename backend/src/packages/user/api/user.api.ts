@@ -245,13 +245,13 @@ const calculateCredit = (consumptionType: ConsumptionType, consumption: number) 
         return 0
     }
     switch(consumptionType) {
-        case "ELECTRICITY": 
-            return Math.max(100 - consumption, 0)
-        case 'GAS': 
-            return Math.max(100 - consumption, 0)
+        case "ELECTRICITY":
+            return Math.max(180 - consumption, 0) * 10
+        case 'GAS':
+            return Math.max(100 - consumption, 0) * 18
         case "WATER":
-            return Math.max(7 - consumption, 0) 
-        default: 
+            return Math.max(7 - consumption, 0) * 250
+        default:
             return 0
     }
 }
