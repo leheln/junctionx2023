@@ -8,6 +8,7 @@ import {AddUtilitiesPage} from "@/pages/add-utilities";
 import {EventPage} from "@/pages/event";
 import {ScanPage} from '@/pages/scan';
 import { StoreItemPage } from '@/pages/store-item';
+import {LogoutPage} from '@/pages/logout';
 
 export function Router() {
     return (
@@ -61,6 +62,12 @@ export function Router() {
                 <Route path={'/add-utilities'} element={
                     <ProtectedRoute>
                         <AddUtilitiesPage/>
+                    </ProtectedRoute>
+                }/>
+
+                <Route path={'/logout'} element={
+                    <ProtectedRoute>
+                        <LogoutPage/>
                     </ProtectedRoute>
                 }/>
             </Routes>
