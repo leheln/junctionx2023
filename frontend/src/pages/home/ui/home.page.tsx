@@ -149,7 +149,7 @@ export function HomePage() {
                 <div className="text-2xl px-2 mb-1">Passes</div>
                 <Card className="flex flex-col overflow-hidden backdrop-blur-2xl bg-transparent">
                     <div className="flex flex-col bg-background p-4 gap-4">
-                        {passes ?
+                        {passes.length > 0 ?
                             passes.map(pass => <div key={pass.id} className="flex items-center gap-2">
                                 <div className="bg-primary p-2 rounded-full">
                                     <PassIcon type={pass.type} className="w-6 h-6 text-primary-foreground"/>
