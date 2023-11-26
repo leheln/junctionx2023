@@ -22,7 +22,7 @@ function EventCard({event, applied}: EventCardProps) {
         </div>
         <div className="backdrop-blur-2xl bg-background px-4 py-2">
             <div className="text-lg">{event.title}</div>
-            <div className="opacity-80 overflow-ellipsis">{event.description.slice(0, 90)}{event.description.length > 90? "..." : ""}</div>
+            <div className="opacity-80 line-clamp-2 overflow-ellipsis">{event.description}</div>
         </div>
     </Card>
 }
