@@ -8,6 +8,7 @@ const barcodeBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/i
 const greenpeaceGarbageCollectionBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/greenpeace_garbace_collection.png"))).toString('base64')
 const greenPeaceWorkshopBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/greenpeace_work_shop.png"))).toString('base64')
 const molTreePlantingBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/mol_tree_planting.png"))).toString('base64')
+const communityGarbageCollectionBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/community_garbage_collection.png"))).toString('base64')
 
 export const populateDatabase = async () => {
     const address: Prisma.AddressCreateInput = {
@@ -83,10 +84,9 @@ export const populateDatabase = async () => {
         })
     }
 
-    greenPeaceWorkshopBase64
     const events: Prisma.EventCreateInput[] = [{
-        credits: 100,
-        date: new Date("2023-11-30T23:25:57Z"),
+        credits: 200,
+        date: new Date("2023-11-30T10:00:00Z"),
         description: "Join Greenpeace in our mission to protect our parks and create a cleaner, greener world! We invite you to be a part of our community garbage collection event, where every piece of collected trash brings us one step closer to a healthier planet.",
         image: greenpeaceGarbageCollectionBase64,
         title: "Garbage collection in Kamaraerdő",
@@ -106,8 +106,8 @@ export const populateDatabase = async () => {
         }
     },
     {
-        credits: 100,
-        date: new Date("2023-12-12T23:25:57Z"),
+        credits: 200,
+        date: new Date("2023-12-12T16:30:00Z"),
         description: "Embark on a journey towards a more sustainable and eco-friendly lifestyle with Greenpeace! Join us for an engaging workshop where we'll explore practical tips, share knowledge, and inspire action for a greener, healthier planet.",
         image: greenPeaceWorkshopBase64,
         title: "Greenpeace sustainability workshop",
@@ -127,8 +127,8 @@ export const populateDatabase = async () => {
         }
     },
     {
-        credits: 100,
-        date: new Date("2023-12-01T23:25:57Z"),
+        credits: 150,
+        date: new Date("2023-12-01T12:00:00Z"),
         image: molTreePlantingBase64,
         title: "Tree planting by MOL Nyrt.",
         description: "Join us for a meaningful and eco-friendly initiative as Mol Nyrt. takes a step towards a greener future! In our ongoing commitment to environmental sustainability, we are excited to invite you to participate in our tree-planting event.",
@@ -144,6 +144,27 @@ export const populateDatabase = async () => {
                 street: "Eötvös út",
                 streetNumber: 7,
                 zipCode: "1121"
+            }
+        }
+    },
+    {
+        credits: 50,
+        date: new Date("2023-12-01T12:00:00Z"),
+        image: communityGarbageCollectionBase64,
+        title: "Garbage collection in Zugló",
+        description: "Hey! Lately, I've noticed a growing issue that concerns all of us – there's a garbage pile that seems to have been standing in Bobek street for quite some time now. As a community, I believe it's time for us to come together and address this issue head-on. It's disheartening to see our beautiful neighborhood tarnished by this eyesore, not to mention the potential environmental impact it may have. To take matters into our own hands, I'm organizing a community garbage collection event on 2023.12.20., starting at 10:00, right at the problematic site.",
+        type: "GARBAGE_COLLECTION",
+        organizer: {
+            connect: {
+                id: user.id
+            }
+        },
+        address: {
+            create: {
+                city: "Budapest",
+                street: "Bobek utca",
+                streetNumber: 70,
+                zipCode: "1144"
             }
         }
     }]
