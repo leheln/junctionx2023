@@ -9,14 +9,18 @@ interface LayoutProps {
     title?: string
     showBack?: boolean
     showNavigation?: boolean
+    backgroundImage?: string
     children: React.ReactNode
 }
 
-export function Layout({className, title, showBack, showNavigation, children}: LayoutProps) {
+export function Layout({className, title, showBack, showNavigation, backgroundImage, children}: LayoutProps) {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div
+            className="min-h-screen flex flex-col bg-cover bg-center bg-fixed bg-gradient-to-t from-secondary to-body-background"
+            style={backgroundImage ? {backgroundImage: `url(${backgroundImage})`} : {}}
+        >
             {(title || showBack) && (
                 <header
                     className="bg-background border-b-[1px] sticky top-0 h-12 px-2 flex justify-between items-center" style={{zIndex: 2}}>
@@ -28,7 +32,7 @@ export function Layout({className, title, showBack, showNavigation, children}: L
             <main className={(className ?? "") + " flex-grow"}>
                 {children}
             </main>
-            <footer className="bg-background sticky bottom-0 border-t-[1px]">
+            <footer className="bg-background backdrop-blur-md sticky bottom-0 border-t-[1px]">
                 {showNavigation && <Navigation/>}
             </footer>
         </div>

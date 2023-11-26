@@ -4,7 +4,7 @@ type Theme = 'light' | 'dark';
 type ThemeSetter = (theme: Theme) => void;
 type ThemeBundle = [Theme, ThemeSetter];
 
-const initialTheme = 'dark';
+const initialTheme = 'light';
 const defaultThemeContextValue: ThemeBundle = [initialTheme, () => {
     throw new Error('No ThemeProvider found.');
 }];

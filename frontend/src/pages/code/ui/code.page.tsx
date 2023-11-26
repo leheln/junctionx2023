@@ -23,7 +23,7 @@ export function CodePage() {
             });
     });
     return (
-        <Layout title="QR Code" showBack className="flex flex-col items-center p-8 text-center">
+        <Layout title="QR Code" showBack className="flex flex-col items-center p-8 text-center" backgroundImage="/background_green_pale.png">
             Show this QR code to event organizers to claim rewards
             {
                 loading ?
@@ -33,7 +33,7 @@ export function CodePage() {
                         </div>
                     )
                     : (
-                        <img className="h-[250px] w-[250px] mt-4 invert mix-blend-screen" alt="" src={`data:image/${qrCode}`}/>
+                        <img className="h-[250px] w-[250px] mt-4 mix-blend-multiply" alt="" src={`data:image/${qrCode}`}/>
                     )
             }
         </Layout>

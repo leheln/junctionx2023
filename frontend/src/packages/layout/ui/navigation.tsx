@@ -16,7 +16,7 @@ export function NavigationItem({to, title, Icon}: NavigationItemProps) {
         <Link
             to={to}
             className={`
-                ${window.location.pathname.startsWith(to) ? 'text-foreground' : 'text-muted-foreground'}
+                ${window.location.pathname.startsWith(to) ? 'text-primary' : 'text-muted-foreground'}
                 w-20 p-3 flex flex-col items-center
             `}>
 

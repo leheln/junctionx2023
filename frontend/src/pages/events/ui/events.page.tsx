@@ -24,7 +24,7 @@ export function EventsPage() {
         })
     }, [])
     return (
-        <Layout showNavigation>
+        <Layout showNavigation backgroundImage="/background_green_pale.png">
             <div className="flex flex-col gap-4 p-4">
                 {events.map(e => <Link key={e.id} to={`${e.id}`}><EventCard event={e} onLeave={(e) => {
                     leaveEvent(e.id!, id!)
