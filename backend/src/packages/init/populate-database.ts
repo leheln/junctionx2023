@@ -102,9 +102,8 @@ export const populateDatabase = async () => {
                 address: {
                     create: address
                 },
-                credits: 0,
+                credits: 3000,
                 password: await hashPassword('admin'),
-
             }
         })
     }
