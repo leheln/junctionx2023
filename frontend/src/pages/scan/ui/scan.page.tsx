@@ -5,7 +5,7 @@ import {QrScanner} from '@yudiel/react-qr-scanner';
 export function ScanPage() {
     const [data, setData] = useState('No result');
     return (
-        <Layout showNavigation className="flex flex-col">
+        <Layout showBack className="flex flex-col" backgroundImage="/background_green_pale.png">
             <div className="">
                 <QrScanner
                     onDecode={(result) => setData(result)}

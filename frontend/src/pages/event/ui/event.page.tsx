@@ -1,7 +1,7 @@
 import {Layout} from '@/packages/layout';
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {SustainabilityEvent, SustainabilityEventAttendance} from "@/models/event.ts";
+import {SustainabilityEvent} from "@/models/event.ts";
 import {axios} from "@/core/axios";
 import SpinLoader from "@/components/spin-loader.tsx";
 import {IoLocationSharp} from "react-icons/io5";
@@ -62,10 +62,15 @@ export function EventPage() {
                     <div className="h-1" />
                     <div className="text-muted-foreground" >{event.description}</div>
                     <div className="flex-grow h-1" />
-                    {new Date(event.date) < new Date() ?
-                        <Button disabled variant="outline">The event has already passed</Button> :
-                        event.attendance?.find?.(a => a.userId === id)? <Button className="gap-1 bg-red-500"  onClick={() => removeAttendance(event)}>Leave event</Button> :
-                        <Button className="gap-1 bg-yellow-500" onClick={() => createAttendance(event)}>Join and earn {event.credits} credits</Button>
+                    {event.organizerId === id ?
+                        (<Link to={`/scan/${eventId}`} className="flex">
+                            <Button className="flex-grow">Scan QR code</Button>
+                        </Link>) :
+                        (new Date(event.date) < new Date() ?
+                            <Button disabled variant="outline">The event has already passed</Button> :
+                            event.attendance?.find?.(a => a.userId === id)? <Button className="gap-1 bg-red-500"  onClick={() => removeAttendance(event)}>Leave event</Button> :
+                            <Button className="gap-1 bg-yellow-500" onClick={() => createAttendance(event)}>Join and earn {event.credits} credits</Button>
+                        )
                     }
                 </div>
             </Layout>
