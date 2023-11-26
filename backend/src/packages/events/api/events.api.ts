@@ -3,7 +3,11 @@ import {prisma} from '@/database/prisma';
 
 export const eventGetListApi = async (req: Request, res: Response) => {
 
-    const events = await prisma.event.findMany({})
+    const events = await prisma.event.findMany({
+        include: {
+            attendance: true
+        }
+    })
     return res.json({ items: events })
 }
 

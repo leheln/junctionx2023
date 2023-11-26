@@ -4,19 +4,21 @@ import {Card} from "@/components/ui/card.tsx";
 
 interface EventCardProps {
     event: SustainabilityEvent
-    onLeave: (event: SustainabilityEvent) => void
-    onJoin: (event: SustainabilityEvent) => void
+    applied: boolean
 }
 
 
-function EventCard({event}: EventCardProps) {
+function EventCard({event, applied}: EventCardProps) {
     return <Card className="rounded-lg flex flex-col justify-between h-56 bg-cover bg-center overflow-hidden"
                 style={{background: `url('data:image/png;base64,${event.image}')`}}>
-        <div className="flex items-center p-3 gap-1">
-            <img className="w-6 h-6" src="/credit.png"/>
-            <div className="text-[#ffd53c] text-lg font-bold">{event.credits}</div>
-            <div className="flex-grow"/>
-            <FaHeart className="w-6 h-6 text-primary-foreground"/>
+        <div className="flex p-3 items-start justify-between">
+            <div className="flex bg-white rounded-full items-center gap-1 px-0.5 pe-1.5">
+                <img className="w-6 h-6" src="/credit.png"/>
+                <div className="text-[#ffd53c] text-lg font-bold">{event.credits}</div>
+            </div>
+            {applied && <div className="bg-white rounded-full p-2">
+                <FaHeart className="w-6 h-6 text-primary"/>
+            </div>}
         </div>
         <div className="backdrop-blur-2xl bg-background px-4 py-2">
             <div className="text-lg">{event.title}</div>
