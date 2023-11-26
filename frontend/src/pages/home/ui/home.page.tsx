@@ -8,16 +8,22 @@ import {Consumption, ConsumptionType} from "@/models/consumption.ts";
 import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {IoQrCode} from "react-icons/io5";
+import {SustainabilityEvent} from "@/models/event.ts";
 
 type Utilities = {
     [name: string]: Consumption
 }
 
 export function HomePage() {
-    const credits = useSelector((state: RootState) => state.auth.credits)
+    const { id, credits } = useSelector((state: RootState) => state.auth);
+    const [event, setEvent] = useState<SustainabilityEvent | undefined>(undefined)
     const [utilities, setUtilities] = useState<Utilities>({})
 
     useEffect(() => {
+        axios.get<{ items: SustainabilityEvent[] }>("/api/events").then((res) => {
+            const event = res.data.items.find(e => !!e.attendance?.find(a => a.id == id))
+            setEvent(event)
+        })
         axios.get<Consumption[]>("/api/users/consumptions")
             .then((res) => {
                 console.log(res.data)
@@ -45,9 +51,15 @@ export function HomePage() {
                 </Link>
             </div>
 
+            {event && <div className="flex flex-col">
+                <div className="text-2xl px-2 mb-1">Next event</div>
+                <Card className="flex flex-col overflow-hidden backdrop-blur-2xl bg-transparent">
+                    <img src={`data:image/png;base64,${event.image}`}/>
+                </Card>
+            </div>}
+
             <div className="flex flex-col">
                 <div className="text-2xl px-2 mb-1">Utilities</div>
-                {/*<div className="h-[600px]"/>*/}
                 <Card className="flex flex-col overflow-hidden backdrop-blur-2xl bg-transparent">
                     <div className="flex flex-row p-2 gap-3 items-center bg-background">
                         <div className="relative w-32 h-32">

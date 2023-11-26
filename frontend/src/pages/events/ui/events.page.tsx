@@ -7,14 +7,6 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {Link} from "react-router-dom";
 
-function leaveEvent(eventId: string, userId: string) {
-    axios.delete(`/api/users/${userId}/events/${eventId}`)
-}
-
-function joinEvent(eventId: string, userId: string) {
-    return axios.post(`/api/users/${userId}/events/${eventId}`).then(res => res.data)
-}
-
 export function EventsPage() {
     const { id } = useSelector((state: RootState) => state.auth);
     const [events, setEvents] = useState<SustainabilityEvent[]>([])
