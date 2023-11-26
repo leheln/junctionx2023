@@ -50,7 +50,7 @@ export function StoreItemPage() {
                 </div>
             </div>
 
-            <img src="/pic_trulli.jpg" />
+            <img src={`data:image/png;base64,${storeItem.image}`} />
             <div className="flex-grow flex flex-col p-4 pb-8 gap-2">
                 <div className="flex flex-row gap-2 items-center">
                     <FaUser className="w-4 h-4" />

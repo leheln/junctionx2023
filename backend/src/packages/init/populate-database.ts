@@ -9,6 +9,7 @@ const greenpeaceGarbageCollectionBase64 = Buffer.from(fs.readFileSync(path.resol
 const greenPeaceWorkshopBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/greenpeace_work_shop.png"))).toString('base64')
 const molTreePlantingBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/mol_tree_planting.png"))).toString('base64')
 const communityGarbageCollectionBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/community_garbage_collection.png"))).toString('base64')
+const bubiDiscountBase64 = Buffer.from(fs.readFileSync(path.resolve("./src/packages/init/images/bubi_discount.png"))).toString('base64')
 
 export const populateDatabase = async () => {
     const address: Prisma.AddressCreateInput = {
@@ -236,16 +237,16 @@ export const populateDatabase = async () => {
         }
     })
 
-
+    await prisma.storeItem.deleteMany()
     await prisma.storeItem.createMany({
         data: [
             {
-                credit: 100,
-                title: "StoreItem 1",
-                description: "Store item desc",
-                image: "",
+                credit: 1200,
+                title: "Mol Bubi 20% discount",
+                description: "We're excited to announce an exclusive partnership between Mol Nyrt. and the , bringing you sustainable savings like never before. As part of our commitment to environmental responsibility, Mol Nyrt. is offering a special 20% discount for Mol Bubi.",
+                image: bubiDiscountBase64,
                 barcode: barcodeBase64,
-                userId: createdUser.id
+                userId: mol.id
             },
             {
                 credit: 100,
