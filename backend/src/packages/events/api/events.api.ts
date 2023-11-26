@@ -160,6 +160,9 @@ export const eventValidateParticipationApi = async (req: Request, res: Response)
                 userId: userToValidateParticipationForId,
             }
         })
+        if (attendance.completed) {
+            return res.status(200).send(attendance)
+        }
         try {
 
             await prisma.eventAttendance.update({
