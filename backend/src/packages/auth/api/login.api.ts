@@ -38,6 +38,7 @@ export const loginApi = async (req: Request, res: Response) => {
         req.session.save();
         return res.json({
             loggedIn: true,
+            id: user.id,
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
