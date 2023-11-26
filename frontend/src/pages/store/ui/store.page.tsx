@@ -33,7 +33,7 @@ export function StorePage() {
                 {myItems.length > 0 && <div className="text-2xl px-2 mb-1">Store</div>}
                 <div className="grid grid-cols-2 gap-4">
                     {storeItems.map(i => <Link key={i.id!} to={`${i.id!}`}>
-                        <StoreItemCard storeItem={i} />
+                        <StoreItemCard storeItem={i} showCredits />
                     </Link>)}
                 </div>
             </div>
