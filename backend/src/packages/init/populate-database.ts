@@ -194,7 +194,7 @@ export const populateDatabase = async () => {
         }
     }]
     await prisma.event.deleteMany()
-    for (const event of events.slice(0, -2)) {
+    for (const event of events.slice(0, -1)) {
         await prisma.event.create({
             data: event
         })
