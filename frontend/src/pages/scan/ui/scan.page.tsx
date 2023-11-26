@@ -9,7 +9,12 @@ import SpinLoader from '@/components/spin-loader.tsx';
 export function ScanPage() {
     const {eventId} = useParams();
     const [loading, setLoading] = useState(false);
+    const [lastRecognition, setLastRecognition] = useState(new Date().getTime());
     const onDecode = (result: string) => {
+        if (new Date().getTime() - lastRecognition < 5000) {
+            return;
+        }
+        setLastRecognition(new Date().getTime());
         setLoading(true);
         axios.post(`/api/events/${eventId}/users/${result}/validateParticipation`)
             .then(() => {
