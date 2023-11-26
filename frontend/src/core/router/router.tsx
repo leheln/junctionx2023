@@ -52,7 +52,7 @@ export function Router() {
                     </ProtectedRoute>
                 }/>
 
-                <Route path={'/scan'} element={
+                <Route path={'/scan/:eventId'} element={
                     <ProtectedRoute>
                         <ScanPage/>
                     </ProtectedRoute>
