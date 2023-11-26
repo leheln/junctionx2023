@@ -248,7 +248,7 @@ export const populateDatabase = async () => {
                 description: "Calling all eco-warriors and sustainability enthusiasts! We're thrilled to reward our engaged users on Sustainify with an exclusive 30% discount on Greenpeace shirts. Now, you can proudly wear your commitment to a greener planet.",
                 image: greenpeaceShirtBase64,
                 barcode: barcodeBase64,
-                userId: createdUser.id
+                userId: greenpeace.id
             }
         ]
     })
