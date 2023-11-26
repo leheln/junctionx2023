@@ -14,7 +14,7 @@ function EventCard({event, applied}: EventCardProps) {
         <div className="flex p-3 items-start justify-between">
             <div className="flex bg-white rounded-full items-center gap-1 px-0.5 pe-1.5">
                 <img className="w-6 h-6" src="/credit.png"/>
-                <div className="text-[#ffd53c] text-lg font-bold">{event.credits}</div>
+                <div className="text-[#bf9706] text-lg font-bold">{event.credits}</div>
             </div>
             {applied && <div className="bg-white rounded-full p-2">
                 <FaHeart className="w-6 h-6 text-primary"/>

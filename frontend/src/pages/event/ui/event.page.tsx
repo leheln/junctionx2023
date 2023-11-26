@@ -69,7 +69,7 @@ export function EventPage() {
                         (new Date(event.date) < new Date() ?
                             <Button disabled variant="outline">The event has already passed</Button> :
                             event.attendance?.find?.(a => a.userId === id)? <Button className="gap-1 bg-red-500"  onClick={() => removeAttendance(event)}>Leave event</Button> :
-                            <Button className="gap-1 bg-yellow-500" onClick={() => createAttendance(event)}>Join and earn {event.credits} credits</Button>
+                            <Button className="gap-1" onClick={() => createAttendance(event)}>Join and earn {event.credits} credits</Button>
                         )
                     }
                 </div>
