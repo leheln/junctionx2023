@@ -7,6 +7,7 @@ import {Card} from '@/components/ui/card.tsx';
 import {axios} from '@/core/axios';
 import {useNavigate} from 'react-router-dom';
 import {ConsumptionType} from "@/models/consumption.ts";
+import {undefined} from "zod";
 
 interface ConsumptionData {
     type: ConsumptionType
@@ -18,7 +19,7 @@ interface ConsumptionData {
 export function AddUtilitiesPage() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState<ConsumptionData | undefined>(undefined);
+    const [data, setData] = useState<ConsumptionData | undefined>({amount: 0, dateEnd: "", dateStart: "", type: ConsumptionType.ELECTRICITY});
 
     const onFile = (e: ChangeEvent<HTMLInputElement>) => {
         setLoading(true);
@@ -64,7 +65,7 @@ export function AddUtilitiesPage() {
     };
 
     return (
-        <Layout title="Add utility bill" showBack className="flex flex-col p-4 justify-center items-center gap-4">
+        <Layout title="Add utility bill" showBack className="flex flex-col p-4 pt-48 items-center gap-4" backgroundImage="/background_green_pale.png">
             {loading ?
                 <SpinLoader size={32}/> :
                 (data ?
@@ -97,13 +98,13 @@ interface AcceptProps {
 
 function Accept({data, onRetry, onAdd}: AcceptProps) {
     return <>
-        <Card className="flex flex-col px-4 py-2 w-52 items-center gap-2">
+        <Card className="flex flex-col px-4 py-2 w-56 items-center gap-2 bg-background backdrop-blur-2xl">
             <div className="text-xl">Add {data.type.toLowerCase()} bill</div>
             <div><b>From:</b> {new Date(data.dateStart).toLocaleDateString('hu')}</div>
             <div><b>To:</b> {new Date(data.dateEnd).toLocaleDateString('hu')}</div>
             <div className="font-bold">{data.amount} kWh</div>
         </Card>
-        <div className="flex w-48 gap-4">
+        <div className="flex w-52 gap-4">
             <Button className="basis-0 flex-grow" variant="outline" onClick={onRetry}>Retry</Button>
             <Button className="basis-0 flex-grow" onClick={onAdd}>Add</Button>
         </div>

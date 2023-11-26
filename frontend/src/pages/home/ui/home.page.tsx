@@ -1,12 +1,13 @@
-import { RootState } from '@/core/state';
+import {RootState} from '@/core/state';
 import {Layout} from '@/packages/layout';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {axios} from "@/core/axios";
 import {Consumption, ConsumptionType} from "@/models/consumption.ts";
 import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {IoQrCode} from "react-icons/io5";
 
 type Utilities = {
     [name: string]: Consumption
@@ -34,31 +35,34 @@ export function HomePage() {
             })
     }, [])
     return (
-        <Layout showNavigation className="flex flex-col p-4 gap-4">
-            <div style={{display: "flex", flexFlow: "row", alignItems: "center", gap:'10px'}}>
-                <img style={{ height: "20px", width: "20px" }} src="credit.png" />
-                <span>{credits}</span>
+        <Layout showNavigation className="flex flex-col p-4 gap-4" backgroundImage="/background_green_pale.png">
+            <div className="flex items-center gap-1">
+                <img className="w-6 h-6" src="credit.png"/>
+                <div className="text-lg font-bold text-[#bf9706]">{credits}</div>
+                <div className="flex-grow"/>
+                <Link to="/code">
+                    <IoQrCode className="w-6 h-6"/>
+                </Link>
             </div>
-            <Link to="/code">QR Code</Link>
-            <Link to="/add-utilities">Add utility bill</Link>
 
             <div className="flex flex-col">
                 <div className="text-2xl px-2 mb-1">Utilities</div>
-                <Card className="flex flex-col overflow-hidden">
-                    <div className="flex flex-row p-2 gap-3 items-center">
+                {/*<div className="h-[600px]"/>*/}
+                <Card className="flex flex-col overflow-hidden backdrop-blur-2xl bg-transparent">
+                    <div className="flex flex-row p-2 gap-3 items-center bg-background">
                         <div className="relative w-32 h-32">
                             <Progress
-                                bg="#ffff007f" fg="#ffff00" r={60}
+                                bg="#EBE18A7F" fg="#EBE18A" r={60}
                                 consumption={utilities[ConsumptionType.ELECTRICITY]?.amount}
                                 avg={180}
                             />
                             <Progress
-                                bg="#8888887f" fg="#888888" r={44}
+                                bg="#6ECCAF7F" fg="#6ECCAF" r={44}
                                 consumption={utilities[ConsumptionType.GAS]?.amount}
                                 avg={100}
                             />
                             <Progress
-                                bg="#008fff7f" fg="#008fff" r={28}
+                                bg="#344D677F" fg="#344D67" r={28}
                                 consumption={utilities[ConsumptionType.WATER]?.amount}
                                 avg={7}
                             />
@@ -66,30 +70,30 @@ export function HomePage() {
                         <div className="flex-grow flex flex-col">
                             <div className="text-sm">Electricity</div>
                             <ConsumptionLabel
-                                color="#ffff00" unit="kWh"
+                                color="#B0A864" unit="kWh"
                                 consumption={utilities[ConsumptionType.ELECTRICITY]?.amount}
                                 avg={180}
                             />
                             <div className="text-sm">Gas</div>
                             <ConsumptionLabel
-                                color="#888888" unit="m3"
+                                color="#5BAB93" unit="m3"
                                 consumption={utilities[ConsumptionType.GAS]?.amount}
                                 avg={100}
                             />
                             <div className="text-sm">Water</div>
                             <ConsumptionLabel
-                                color="#008fff" unit="m3"
+                                color="#344D67" unit="m3"
                                 consumption={utilities[ConsumptionType.WATER]?.amount}
                                 avg={7}
                             />
                         </div>
                     </div>
-                    <div className="flex items-center gap-1 font-bold text-[#ffd53c] bg-accent p-2 justify-center">
+                    <div className="flex items-center gap-1 font-bold bg-muted p-2 justify-center text-[#bf9706]">
                         <img style={{height: "20px", width: "20px"}} src="credit.png"/> {
-                            (utilities[ConsumptionType.ELECTRICITY]?.credits ?? 0) +
-                            (utilities[ConsumptionType.GAS]?.credits ?? 0) +
-                            (utilities[ConsumptionType.WATER]?.credits ?? 0)
-                        } earned
+                        (utilities[ConsumptionType.ELECTRICITY]?.credits ?? 0) +
+                        (utilities[ConsumptionType.GAS]?.credits ?? 0) +
+                        (utilities[ConsumptionType.WATER]?.credits ?? 0)
+                    } earned
                     </div>
                 </Card>
                 <Link to="/add-utilities" className="mt-2 flex justify-end">
@@ -102,7 +106,7 @@ export function HomePage() {
     );
 }
 
-function ConsumptionLabel({color, unit, consumption, avg}: {color: string, unit: string, consumption?: number, avg: number}) {
+function ConsumptionLabel({color, unit, consumption, avg}: { color: string, unit: string, consumption?: number, avg: number }) {
     if (consumption) {
         return <div className="flex items-center text-lg gap-1" style={{color: color}}>
             {consumption} {unit}

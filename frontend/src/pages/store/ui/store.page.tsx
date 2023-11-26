@@ -25,7 +25,7 @@ export function StorePage() {
         })
     }, [])
     return (
-        <Layout showNavigation>
+        <Layout showNavigation backgroundImage="/background_green_pale.png">
             <div className="flex flex-col gap-4 p-4">
                 {storeItems.map(si => <Link key={si.id!} to={`${si.id!}`}><StoreItemCard storeItem={si} onRedeem={(si) => {
                     storeItemRedeem(si, credits!)
