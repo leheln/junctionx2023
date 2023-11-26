@@ -9,24 +9,32 @@ import {Card} from "@/components/ui/card.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {IoQrCode} from "react-icons/io5";
 import {SustainabilityEvent} from "@/models/event.ts";
+import {MdDateRange, MdOutlinePedalBike} from "react-icons/md";
+import {Pass, PassType} from "@/models/pass.ts";
+import {FaBusAlt} from "react-icons/fa";
 
 type Utilities = {
     [name: string]: Consumption
 }
 
 export function HomePage() {
-    const { id, credits } = useSelector((state: RootState) => state.auth);
+    const {id, credits} = useSelector((state: RootState) => state.auth);
     const [event, setEvent] = useState<SustainabilityEvent | undefined>(undefined)
     const [utilities, setUtilities] = useState<Utilities>({})
+    const [passes, setPasses] = useState<Pass[]>([])
 
     useEffect(() => {
-        axios.get<{ items: SustainabilityEvent[] }>("/api/events").then((res) => {
-            const event = res.data.items.find(e => !!e.attendance?.find(a => a.id == id))
-            setEvent(event)
-        })
+        axios.get<{
+            items: SustainabilityEvent[]
+        }>("/api/events")
+            .then((res) => {
+                const event = res.data.items.find(e => {
+                    return !!e.attendance?.find(a => a.userId == id) && new Date() < new Date(e.date)
+                })
+                setEvent(event)
+            })
         axios.get<Consumption[]>("/api/users/consumptions")
             .then((res) => {
-                console.log(res.data)
                 const utilities: Utilities = {}
                 for (let type in ConsumptionType) {
                     const utility = res.data.find(utility =>
@@ -38,6 +46,13 @@ export function HomePage() {
                     }
                 }
                 setUtilities(utilities)
+            })
+        axios.get<Pass[]>("/api/users/passes")
+            .then((res) => {
+                const passes = res.data.filter(p => {
+                    return new Date(p.dateStart) < new Date() && new Date() < new Date(p.dateEnd)
+                })
+                setPasses(passes)
             })
     }, [])
     return (
@@ -53,9 +68,19 @@ export function HomePage() {
 
             {event && <div className="flex flex-col">
                 <div className="text-2xl px-2 mb-1">Next event</div>
-                <Card className="flex flex-col overflow-hidden backdrop-blur-2xl bg-transparent">
-                    <img src={`data:image/png;base64,${event.image}`}/>
-                </Card>
+                <Link to={`/events/${event.id}`}>
+                    <Card className="flex overflow-hidden backdrop-blur-2xl bg-background">
+                        <img className="w-24 h-24 object-cover object-center"
+                             src={`data:image/png;base64,${event.image}`}/>
+                        <div className="flex-grow flex flex-col px-3 py-2 justify-evenly">
+                            <div className="text-lg line-clamp-2 overflow-ellipsis">{event.title}</div>
+                            <div className="flex flex-row gap-2 items-center text-muted-foreground">
+                                <MdDateRange className="w-4 h-4"/>
+                                {new Date(event.date).toLocaleString("hu")}
+                            </div>
+                        </div>
+                    </Card>
+                </Link>
             </div>}
 
             <div className="flex flex-col">
@@ -109,17 +134,57 @@ export function HomePage() {
                     </div>
                 </Card>
                 <Link to="/add-utilities" className="mt-2 flex justify-end">
-                    <Button variant="outline">
+                    <Button variant="outline" className="backdrop-blur-2xl">
                         Scan utility bill
                     </Button>
                 </Link>
+            </div>
+
+            <div className="flex flex-col">
+                <div className="text-2xl px-2 mb-1">Passes</div>
+                <Card className="flex flex-col overflow-hidden backdrop-blur-2xl bg-transparent">
+                    <div className="flex flex-col bg-background p-4 gap-4">
+                        {passes ?
+                            passes.map(pass => <div key={pass.id} className="flex items-center gap-2">
+                                <div className="bg-primary p-2 rounded-full">
+                                    <PassIcon type={pass.type} className="w-6 h-6 text-primary-foreground"/>
+                                </div>
+                                <div className="flex flex-col">
+                                    <PassLabel type={pass.type}/>
+                                    <div className="flex flex-row gap-2 items-center text-muted-foreground">
+                                        <MdDateRange className="w-4 h-4"/>
+                                        {new Date(pass.dateEnd).toLocaleDateString("hu")}
+                                    </div>
+                                </div>
+                            </div>) :
+                            <div className="text-center text-lg text-muted-foreground">
+                                You don't have any passes
+                            </div>
+                        }
+                    </div>
+                    <div className="flex items-center gap-1 font-bold bg-muted p-2 justify-center text-[#bf9706]">
+                        <img style={{height: "20px", width: "20px"}} src="credit.png"/> {
+                        passes.reduce((acc, pass) => acc + pass.credits, 0)
+                    } earned
+                    </div>
+                </Card>
+                <div className="mt-2 flex justify-end">
+                    <Button variant="outline" className="backdrop-blur-2xl">
+                        Scan pass
+                    </Button>
+                </div>
             </div>
         </Layout>
     );
 }
 
-function ConsumptionLabel({color, unit, consumption, avg}: { color: string, unit: string, consumption?: number, avg: number }) {
-    if (consumption) {
+function ConsumptionLabel({color, unit, consumption, avg}: {
+    color: string,
+    unit: string,
+    consumption?: number,
+    avg: number
+}) {
+    if (consumption !== undefined) {
         return <div className="flex items-center text-lg gap-1" style={{color: color}}>
             {consumption} {unit}
             <span className="text-sm text-muted-foreground"> {
@@ -133,9 +198,15 @@ function ConsumptionLabel({color, unit, consumption, avg}: { color: string, unit
     }
 }
 
-function Progress({bg, fg, r, avg, consumption}: { bg: string, fg: string, r: number, avg: number, consumption?: number }) {
+function Progress({bg, fg, r, avg, consumption}: {
+    bg: string,
+    fg: string,
+    r: number,
+    avg: number,
+    consumption?: number
+}) {
     const stroke = 12
-    const progress = Math.max(0, 1 - (consumption ?? 0) / avg)
+    const progress = Math.max(0, 1 - (consumption ?? avg) / avg)
     const arcRadius = r - stroke / 2
     const start = [
         r,
@@ -175,4 +246,28 @@ function Progress({bg, fg, r, avg, consumption}: { bg: string, fg: string, r: nu
             strokeLinecap="round"
         />}
     </svg>
+}
+
+function PassIcon({type, className}: {
+    type: PassType,
+    className?: string
+}) {
+    switch (type) {
+        case PassType.PUBLIC_TRANSPORT:
+            return <FaBusAlt className={className}/>
+        case PassType.BIKE_PASS:
+            return <MdOutlinePedalBike className={className}/>
+    }
+}
+
+function PassLabel({type, className}: {
+    type: PassType,
+    className?: string
+}) {
+    switch (type) {
+        case PassType.PUBLIC_TRANSPORT:
+            return <div className={className}>Public transport</div>
+        case PassType.BIKE_PASS:
+            return <div className={className}>Bike pass</div>
+    }
 }

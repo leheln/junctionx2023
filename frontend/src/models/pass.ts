@@ -11,6 +11,6 @@ export interface Pass {
 }
 
 export enum PassType {
-    PUBLIC_TRANSPORT,
-    BIKE_PASS
+    PUBLIC_TRANSPORT = "PUBLIC_TRANSPORT",
+    BIKE_PASS = "BIKE_PASS"
 }

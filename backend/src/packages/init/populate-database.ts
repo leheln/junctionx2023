@@ -224,7 +224,7 @@ export const populateDatabase = async () => {
     },
 
     ]
-    prisma.pass.deleteMany({})
+    await prisma.pass.deleteMany({})
     await prisma.pass.create({
         data: {
             userId: createdUser.id,
