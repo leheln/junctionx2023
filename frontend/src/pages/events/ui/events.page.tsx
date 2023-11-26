@@ -26,24 +26,9 @@ export function EventsPage() {
     return (
         <Layout showNavigation backgroundImage="/background_green_pale.png">
             <div className="flex flex-col gap-4 p-4">
-                {events.map(e => <Link key={e.id} to={`${e.id}`}><EventCard event={e} onLeave={(e) => {
-                    leaveEvent(e.id!, id!)
-                    const eventIndex = events.findIndex(ei => ei.id === e.id)
-                    const tempEvents = [...events]
-                    const attendanceIndex = tempEvents[eventIndex].attendance?.findIndex(a => a.eventId === e.id && a.userId === id) ?? -1
-
-                    if (attendanceIndex >= 0) {
-                        tempEvents[eventIndex].attendance = [...(tempEvents[eventIndex].attendance?.splice(0, attendanceIndex) || []), ...(tempEvents[eventIndex].attendance?.splice(attendanceIndex + 1, -1) || [])]
-                        setEvents(tempEvents)
-                    }
-                }} onJoin={(e) => {
-                    joinEvent(e.id!, id!).then(data => {
-                        const eventIndex = events.findIndex(ei => ei.id === e.id)
-                        const tempEvents = [...events]
-                        tempEvents[eventIndex].attendance?.push(data)
-                        setEvents(tempEvents)
-                    })
-                }} ></EventCard></Link>)}
+                {events.map(e => <Link key={e.id} to={`${e.id}`}>
+                    <EventCard event={e} applied={!!e.attendance?.find((a) => a.userId == id)} />
+                </Link>)}
             </div>
 
         </Layout >
