@@ -9,8 +9,8 @@ interface EventCardProps {
 
 
 function EventCard({event, applied}: EventCardProps) {
-    return <Card className="rounded-lg flex flex-col justify-between h-56 bg-cover bg-center overflow-hidden"
-                style={{background: `url('data:image/png;base64,${event.image}')`}}>
+    return <Card className="rounded-lg flex flex-col justify-between h-56 bg-cover bg-center bg-background backdrop-blur-2xl overflow-hidden"
+                style={{backgroundImage: `url('data:image/png;base64,${event.image}')`}}>
         <div className="flex p-3 items-start justify-between">
             <div className="flex bg-white rounded-full items-center gap-1 px-0.5 pe-1.5">
                 <img className="w-6 h-6" src="/credit.png"/>
