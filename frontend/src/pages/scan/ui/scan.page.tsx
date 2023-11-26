@@ -7,7 +7,7 @@ import {useParams} from 'react-router-dom';
 export function ScanPage() {
     const { eventId } = useParams();
     const onDecode = (result: string) => {
-        axios.post(`/events/${eventId}/users/${result}/validateParticipation`)
+        axios.post(`/api/events/${eventId}/users/${result}/validateParticipation`)
             .then(() => {
                 toast({
                     variant: 'default',
