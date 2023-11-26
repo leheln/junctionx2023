@@ -70,25 +70,15 @@ export const userGetConsumptionsApi = async (req: Request, res: Response) => {
 }
 
 export const userGetPassesApi = async (req: Request, res: Response) => {
-    const userId = req.params.userId
-    if (req.session.userId === userId) {
-        const passes = await prisma.pass.findMany({
-            where: {
-                userId: userId,
-            },
-            orderBy: {
-                dateStart: 'desc'
-            }
-        })
-        return res.json({
-            id: userId,
-            passes
-        })
-    } else {
-        return res.status(403).send({
-            message: 'Forbidden'
-        });
-    }
+    const passes = await prisma.pass.findMany({
+        where: {
+            userId: req.params.userId,
+        },
+        orderBy: {
+            dateStart: 'desc'
+        }
+    })
+    return res.json(passes)
 }
 
 export const userAddEventAttendance = async (req: Request, res: Response) => {

@@ -54,7 +54,7 @@ export const apiRegistry = (app: Application) => {
     app.post(`${API_PREFIX}/users/consumptions`, authentication, userAddConsumption)
     app.delete(`${API_PREFIX}/users/consumptions/:consumptionId`, authentication, userDeleteConsumption)
 
-    app.get(`${API_PREFIX}/users/:userId/passes`, authentication, userGetPassesApi);
+    app.get(`${API_PREFIX}/users/passes`, authentication, userGetPassesApi);
     app.post(`${API_PREFIX}/users/:userId/passes`, authentication, userAddPass)
     app.delete(`${API_PREFIX}/users/:userId/passes/:passId`, authentication, userDeletePass)
 
