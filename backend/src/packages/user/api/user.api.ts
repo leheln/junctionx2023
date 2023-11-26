@@ -1,5 +1,6 @@
-import { Request, Response } from 'express';
 import { prisma } from '@/database/prisma';
+import { ConsumptionType } from '@prisma/client';
+import { Request, Response } from 'express';
 
 export const userGetApi = async (req: Request, res: Response) => {
     const userId = req.params.userId
@@ -226,11 +227,12 @@ export const userAddConsumption = async (req: Request, res: Response) => {
                 id: req.session.userId
             }
         })
+        const credits = calculateCredit(consumptionBody.type, consumptionBody.amount)
         const consumption = await prisma.consumption.create({
             data: {
                 ...consumptionBody,
                 user: { connect: { id: req.session.userId } },
-                credits: 100 //TODO: Calculate
+                credits: credits
             }
         })
 
@@ -239,12 +241,28 @@ export const userAddConsumption = async (req: Request, res: Response) => {
                 id: req.session.userId
             },
             data: {
-                credits: user.credits + 100
+                credits: user.credits + credits
             }
         })
         return res.json(consumption)
     } catch (e) {
         return res.status(500).send({ message: `Server error ${e}` })
+    }
+}
+
+const calculateCredit = (consumptionType: ConsumptionType, consumption: number) => {
+    if (consumption < 0) {
+        return 0
+    }
+    switch(consumptionType) {
+        case "ELECTRICITY": 
+            return Math.max(100 - consumption, 0)
+        case 'GAS': 
+            return Math.max(100 - consumption, 0)
+        case "WATER":
+            return Math.max(7 - consumption, 0) 
+        default: 
+            return 0
     }
 }
 
@@ -269,3 +287,4 @@ export const userGetStoreItemsApi = async (req: Request, res: Response) => {
     })
     return res.status(200).send({ items: storeItems })
 }
+
